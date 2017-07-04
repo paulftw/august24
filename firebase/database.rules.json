@@ -1,0 +1,31 @@
+{
+  "rules": {
+
+
+    "users": {
+      "$uid": {
+        ".read": "$uid === auth.uid",
+        ".write": "$uid === auth.uid"
+      }
+    },
+
+    "outbox": {
+      "$from": {
+        "$to": {
+          ".write": "$from === root.child('users/' + auth.uid + '/phone')",
+          ".read": "$from === root.child('users/' + auth.uid + '/phone')"
+        }
+      }
+    },
+
+    "inbox": {
+      "$to": {
+        "$from": {
+          ".write": "$from === root.child('users/' + auth.uid + '/phone')",
+          ".read": "$from === root.child('users/' + auth.uid + '/phone')"
+        }
+      }
+    },
+
+  }
+}
