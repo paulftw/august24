@@ -17,7 +17,7 @@ import io.invertase.firebase.RNFirebasePackage; // <-- Add this line
 //import io.invertase.firebase.auth.RNFirebaseAuthPackage; // Firebase Auth
 //import io.invertase.firebase.config.RNFirebaseRemoteConfigPackage; // Firebase Remote Config
 //import io.invertase.firebase.crash.RNFirebaseCrashPackage; // Firebase Crash Reporting
-//import io.invertase.firebase.database.RNFirebaseDatabasePackage; // Firebase Realtime Database
+import io.invertase.firebase.database.RNFirebaseDatabasePackage; // Firebase Realtime Database
 //import io.invertase.firebase.messaging.RNFirebaseMessagingPackage; // Firebase Cloud Messaging
 //import io.invertase.firebase.perf.RNFirebasePerformancePackage; // Firebase Performance
 //import io.invertase.firebase.storage.RNFirebaseStoragePackage; // Firebase Storage
@@ -48,14 +48,14 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
           new FBSDKPackage(mCallbackManager),
-          new RNFirebasePackage()
+          new RNFirebasePackage(),
           // Add these packages as appropriate
 //          new RNFirebaseAdMobPackage(),
 //          new RNFirebaseAnalyticsPackage(),
 //          new RNFirebaseAuthPackage(),
 //          new RNFirebaseRemoteConfigPackage(),
 //          new RNFirebaseCrashPackage(),
-//          new RNFirebaseDatabasePackage(),
+          new RNFirebaseDatabasePackage()
 //          new RNFirebaseMessagingPackage(),
 //          new RNFirebasePerformancePackage(),
 //          new RNFirebaseStoragePackage()

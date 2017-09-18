@@ -4,6 +4,7 @@
  * @flow
  */
 
+import Firebase from 'react-native-firebase'
 import React, { Component } from 'react';
 import {
   AppRegistry,
@@ -12,7 +13,16 @@ import {
   View
 } from 'react-native';
 
+const firebase = Firebase.initializeApp({
+  persistence: true,
+})
+const firedb = firebase.firedb = firebase.database()
+
 export default class August24 extends Component {
+  componentDidMount() {
+    alert('hello world')
+    firedb.ref('/foobar').update({a: 333})
+  }
   render() {
     return (
       <View style={styles.container}>
