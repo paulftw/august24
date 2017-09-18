@@ -16,7 +16,7 @@ import {
   LoginButton,
 } from 'react-native-fbsdk'
 
-import trvl, {
+import {
   centerVertical,
   floatRight,
   Hero,
@@ -39,6 +39,7 @@ export default class HomeLoggedOut extends Component {
     this.state = {
       foo: 'no foo yet',
       busy: false,
+      pushes: [],
     }
     this.state.busy = true
     this.tryLogin()
@@ -53,7 +54,26 @@ export default class HomeLoggedOut extends Component {
       } else {
         // TODO logout
       }
-    });
+    })
+
+    this.getPushData()
+  }
+
+  async getPushData() {
+    firebase.messaging().requestPermissions()
+    const initPush = await firebase.messaging().getInitialNotification()
+    if (initPush) {
+      this.state.pushes.push(initPush)
+      this.setState({
+        pushes: this.state.pushes,
+      })
+    }
+    firebase.messaging().onMessage(msg => {
+      this.state.pushes.push(msg)
+      this.setState({
+        pushes: this.state.pushes,
+      })
+    })
   }
 
   async tryLogin() {
@@ -149,7 +169,7 @@ export default class HomeLoggedOut extends Component {
             readPermissions={["email", "public_profile", "user_friends"]}
             onLoginFinished={this.onLoginFinished.bind(this)}
             onLogoutFinished={() => alert("logout.")}/>
-          <Text>{JSON.stringify(this.props.meta)}</Text>
+          <Text>{JSON.stringify(this.state.pushes)}</Text>
         </Panel>
 
         {this.state.busy ? <ProgressViewIOS /> : null}

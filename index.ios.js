@@ -18,7 +18,7 @@ class August24 extends Component {
 
   render() {
     return (
-      <HomeLoggedOut meta={codePush.getUpdateMetadata()} />
+      <HomeLoggedOut />
     );
   }
 }
