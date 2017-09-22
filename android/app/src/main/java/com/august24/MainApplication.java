@@ -3,7 +3,6 @@ package com.august24;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.microsoft.codepush.react.CodePush;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.rt2zz.reactnativecontacts.ReactNativeContacts;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
@@ -20,7 +19,7 @@ import io.invertase.firebase.RNFirebasePackage; // <-- Add this line
 //import io.invertase.firebase.auth.RNFirebaseAuthPackage; // Firebase Auth
 //import io.invertase.firebase.config.RNFirebaseRemoteConfigPackage; // Firebase Remote Config
 //import io.invertase.firebase.crash.RNFirebaseCrashPackage; // Firebase Crash Reporting
-//import io.invertase.firebase.database.RNFirebaseDatabasePackage; // Firebase Realtime Database
+import io.invertase.firebase.database.RNFirebaseDatabasePackage; // Firebase Realtime Database
 //import io.invertase.firebase.messaging.RNFirebaseMessagingPackage; // Firebase Cloud Messaging
 //import io.invertase.firebase.perf.RNFirebasePerformancePackage; // Firebase Performance
 //import io.invertase.firebase.storage.RNFirebaseStoragePackage; // Firebase Storage
@@ -43,11 +42,6 @@ public class MainApplication extends Application implements ReactApplication {
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
 
     @Override
-    protected String getJSBundleFile() {
-      return CodePush.getJSBundleFile();
-    }
-
-    @Override
     public boolean getUseDeveloperSupport() {
       return BuildConfig.DEBUG;
     }
@@ -56,20 +50,17 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new CodePush(null, getApplicationContext(), BuildConfig.DEBUG),
-            new LinearGradientPackage(),
-            new ReactNativeContacts(),
-            new FBSDKPackage(),
-            new RNFirebasePackage()
+          new LinearGradientPackage(),
+          new ReactNativeContacts(),
           new FBSDKPackage(mCallbackManager),
-          new RNFirebasePackage()
+          new RNFirebasePackage(),
           // Add these packages as appropriate
 //          new RNFirebaseAdMobPackage(),
 //          new RNFirebaseAnalyticsPackage(),
 //          new RNFirebaseAuthPackage(),
 //          new RNFirebaseRemoteConfigPackage(),
 //          new RNFirebaseCrashPackage(),
-//          new RNFirebaseDatabasePackage(),
+          new RNFirebaseDatabasePackage()
 //          new RNFirebaseMessagingPackage(),
 //          new RNFirebasePerformancePackage(),
 //          new RNFirebaseStoragePackage()
