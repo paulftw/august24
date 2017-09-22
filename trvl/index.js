@@ -299,7 +299,6 @@ export class Label extends Component {
       }),
     }
     const style = mergeStyle(baseStyle, this.props.style || {})
-    console.log('merged as ', style)
     return <View style={style.container}>
         <Text style={style.text}>
           {this.props.children}
