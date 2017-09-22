@@ -94,6 +94,8 @@ PODS:
   - GoogleToolboxForMac/NSString+URLArguments (2.1.1)
   - GTMSessionFetcher/Core (1.1.10)
   - Protobuf (3.3.0)
+  - React (0.45.1):
+    - React/Core (= 0.45.1)
   - React/BatchedBridge (0.45.1):
     - React/Core
     - React/cxxreact_legacy
@@ -102,7 +104,8 @@ PODS:
   - React/cxxreact_legacy (0.45.1):
     - React/jschelpers_legacy
   - React/jschelpers_legacy (0.45.1)
-  - RNFirebase (2.0.1)
+  - RNFirebase (2.2.0):
+    - React
   - Yoga (0.45.1.React)
 
 DEPENDENCIES:
@@ -155,9 +158,9 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 30d874b96d0d76028f61fbd122801e3f030d47db
   Protobuf: d582fecf68201eac3d79ed61369ef45734394b9c
   React: 0c9191a8b0c843d7004f950ac6b5f6cba9d125c7
-  RNFirebase: 9d03ea6a3e877f59fb8835bf3e79571edd339451
+  RNFirebase: 67cf507f625e4584b630804fe1254ca34e0e8958
   Yoga: 89c8738d42a0b46a113acb4e574336d61cba2985
 
 PODFILE CHECKSUM: 46e82661bf2adf3d2de0484c62782729488ad9fd
 
-COCOAPODS: 1.3.0.beta.1
+COCOAPODS: 1.3.0.beta.2

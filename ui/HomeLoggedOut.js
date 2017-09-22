@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import {
   Dimensions,
   Image,
+  NativeModules,
   ProgressViewIOS,
   ScrollView,
   StatusBar,
@@ -9,12 +10,6 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
-import {
-  AccessToken,
-  GraphRequest,
-  GraphRequestManager,
-  LoginButton,
-} from 'react-native-fbsdk'
 
 import {
   centerVertical,
@@ -42,7 +37,7 @@ export default class HomeLoggedOut extends Component {
       pushes: [],
     }
     this.state.busy = true
-    this.tryLogin()
+    // this.tryLogin()
   }
 
   componentDidMount() {
@@ -76,33 +71,12 @@ export default class HomeLoggedOut extends Component {
     })
   }
 
-  async tryLogin() {
+  async pressFUI() {
     try {
-      const token = await AccessToken.getCurrentAccessToken()
-      if (!token) {
-        throw 'nonLogged INN'
-      }
-      let authData = await firebase.auth().signInWithCredential({
-        provider: 'facebook',
-        token: token.accessToken,
-      })
-      this.setState({ photoUrl: authData.photoURL })
-      authData = JSON.parse(JSON.stringify(authData))
-      authData.refreshToken = '<eraser />'
+      const user = await NativeModules.RNFirebaseUI.showLogin()
+      alert(JSON.stringify(user))
     } catch (err) {
-      err !== 'nonLogged INN' && alert('access token FAIL ' + err)
-    } finally {
-      this.setState({ busy: false })
-    }
-  }
-
-  onLoginFinished(error, result) {
-    if (error) {
-      alert("login has error: " + result.error)
-    } else if (result.isCancelled) {
-      alert("login is cancelled.")
-    } else {
-      // TODO: logged in AccessToken.getCurrentAccessToken().then(
+      alert('error: ' + JSON.stringify(err.userInfo))
     }
   }
 
@@ -143,14 +117,6 @@ export default class HomeLoggedOut extends Component {
             </Panel>
           </TouchableOpacity>
 
-          <TouchableOpacity>
-            <Panel>
-              <Title>Павло Коржик</Title>
-              <Text>Слава Україні!</Text>
-              <Label type='transparent' style={{container: Object.assign({}, floatRight(), centerVertical())}}>&gt;</Label>
-            </Panel>
-          </TouchableOpacity>
-
           <Panel>
             <Title>Семен Семенченко</Title>
             <Text>Героям Слава!</Text>
@@ -164,11 +130,9 @@ export default class HomeLoggedOut extends Component {
 
         <Panel>
           <Title>5 second interval updates</Title>
-
-          <LoginButton
-            readPermissions={["email", "public_profile", "user_friends"]}
-            onLoginFinished={this.onLoginFinished.bind(this)}
-            onLogoutFinished={() => alert("logout.")}/>
+          <TouchableOpacity onPress={e => this.pressFUI()}>
+            <Text>Fire UI</Text>
+          </TouchableOpacity>
           <Text>{JSON.stringify(this.state.pushes)}</Text>
         </Panel>
 

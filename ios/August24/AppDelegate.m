@@ -8,7 +8,7 @@
  */
 
 #import "AppDelegate.h"
-#import <CodePush/CodePush.h>
+//#import <CodePush/CodePush.h>
 #import "RNFirebaseMessaging.h"
 
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
@@ -41,13 +41,7 @@
   [[UNUserNotificationCenter currentNotificationCenter] setDelegate:self];
 
   NSURL *jsCodeLocation;
-
-
-#ifdef DEBUG
-    jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
-#else
-    jsCodeLocation = [CodePush bundleURL];
-#endif
+  jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
 
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"August24"
