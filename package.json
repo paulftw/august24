@@ -10,10 +10,8 @@
 		"google-libphonenumber": "^3.0.0",
 		"prop-types": "^15.5.10",
 		"react": "16.0.0-alpha.12",
-		"react-native": "0.45.1",
-		"react-native-code-push": "^3.0.1-beta",
+		"react-native": "^0.48.3",
 		"react-native-contacts": "^0.8.2",
-		"react-native-fbsdk": "^0.6.1",
 		"react-native-firebase": "2.2.0",
 		"react-native-linear-gradient": "^2.0.0"
 	},

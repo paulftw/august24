@@ -76,7 +76,7 @@ export default class HomeLoggedOut extends Component {
       const user = await NativeModules.RNFirebaseUI.showLogin()
       alert(JSON.stringify(user))
     } catch (err) {
-      alert('error: ' + JSON.stringify(err.userInfo))
+      alert('error: ' + JSON.stringify(err))
     }
   }
 
