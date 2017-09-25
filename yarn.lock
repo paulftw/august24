@@ -3250,18 +3250,18 @@ react-devtools-core@^2.5.0:
     shell-quote "^1.6.1"
     ws "^2.0.3"
 
-react-native-contacts@^0.8.2:
-  version "0.8.2"
-  resolved "https://registry.yarnpkg.com/react-native-contacts/-/react-native-contacts-0.8.2.tgz#9cf8a0b4afb411163999762effb2dfdf4febc2a6"
+react-native-contacts@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/react-native-contacts/-/react-native-contacts-1.0.2.tgz#58b3b0572e3972a320c731ff639091b013a3c4b0"
 
-react-native-firebase@2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/react-native-firebase/-/react-native-firebase-2.2.0.tgz#2ff935db23e3b58ccc77fc62178eed484ad1eee1"
+react-native-firebase@^2.2.2:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/react-native-firebase/-/react-native-firebase-2.2.2.tgz#9a21129601950dfcd5b90650011a5add8a54b958"
   dependencies:
     bows "^1.6.0"
     prop-types "^15.5.10"
 
-react-native-linear-gradient@^2.0.0:
+react-native-linear-gradient@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/react-native-linear-gradient/-/react-native-linear-gradient-2.3.0.tgz#757997197e35edf52e290891a11566e462845da1"
   dependencies:

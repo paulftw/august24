@@ -11,6 +11,8 @@ import {
   View,
 } from 'react-native'
 
+import Contacts from 'react-native-contacts'
+
 import {
   centerVertical,
   floatRight,
@@ -35,6 +37,8 @@ export default class HomeLoggedOut extends Component {
       foo: 'no foo yet',
       busy: false,
       pushes: [],
+      user: 'anon',
+      contacts: [],
     }
     this.state.busy = true
     // this.tryLogin()
@@ -44,10 +48,19 @@ export default class HomeLoggedOut extends Component {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         // User is signed in.
-        // alert('has user ' + JSON.stringify(user.uid))
-        firedb.ref(`/users/${user.uid}/phone`).set('0412378113')
+        this.setState({user})
+        firedb.ref(`/users/${user.uid}/dataField`).set('set by the app')
       } else {
         // TODO logout
+        alert('logged out')
+      }
+    })
+
+    Contacts.getAll((err, data) => {
+      if (err === 'denied') {
+        alert('contacts denied')
+      } else {
+        this.setState({ contacts: data })
       }
     })
 
@@ -55,7 +68,7 @@ export default class HomeLoggedOut extends Component {
   }
 
   async getPushData() {
-    firebase.messaging().requestPermissions()
+    // firebase.messaging().requestPermissions()
     const initPush = await firebase.messaging().getInitialNotification()
     if (initPush) {
       this.state.pushes.push(initPush)
@@ -74,6 +87,10 @@ export default class HomeLoggedOut extends Component {
   async pressFUI() {
     try {
       const user = await NativeModules.RNFirebaseUI.showLogin()
+      user = await firebase.auth().getCurrentUser()
+      this.setState({
+        user
+      })
       alert(JSON.stringify(user))
     } catch (err) {
       alert('error: ' + JSON.stringify(err))
@@ -93,7 +110,14 @@ export default class HomeLoggedOut extends Component {
             <SectionHeader.Text>45 ПАРТИЗАН</SectionHeader.Text>
           </SectionHeader>
 
-          <TouchableOpacity>
+          {this.state.contacts.map((c, key) => <TouchableOpacity key={key}>
+            <Panel>
+              <Title>{c.givenName} {c.familyName}</Title>
+              <Text>{JSON.stringify(c.phoneNumbers.map(pn => pn.number))}</Text>
+              <Label style={{container: Object.assign({}, floatRight(), centerVertical())}}>v5</Label>
+            </Panel>
+          </TouchableOpacity>)}
+          {/*<TouchableOpacity>
             <Panel>
               <Title>Игорь Еремин</Title>
               <Text>Слава Україні!</Text>
@@ -121,7 +145,7 @@ export default class HomeLoggedOut extends Component {
             <Title>Семен Семенченко</Title>
             <Text>Героям Слава!</Text>
             <Label style={{container: Object.assign({}, floatRight(), centerVertical())}}>3</Label>
-          </Panel>
+          </Panel>*/}
         </ScrollView>
 
         <SectionHeader>
@@ -129,7 +153,7 @@ export default class HomeLoggedOut extends Component {
         </SectionHeader>
 
         <Panel>
-          <Title>5 second interval updates</Title>
+          <Title>User: {JSON.stringify(this.state.user.providerData)}</Title>
           <TouchableOpacity onPress={e => this.pressFUI()}>
             <Text>Fire UI</Text>
           </TouchableOpacity>
