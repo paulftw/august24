@@ -107,7 +107,7 @@ export default class HomeLoggedOut extends Component {
 
         <ScrollView>
           <SectionHeader>
-            <SectionHeader.Text>45 ПАРТИЗАН</SectionHeader.Text>
+            <SectionHeader.Text>{this.state.contacts.length} ПАРТИЗАН</SectionHeader.Text>
           </SectionHeader>
 
           {this.state.contacts.map((c, key) => <TouchableOpacity key={key}>
