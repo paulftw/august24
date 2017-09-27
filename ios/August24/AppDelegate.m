@@ -41,7 +41,7 @@
   [[UNUserNotificationCenter currentNotificationCenter] setDelegate:self];
 
   NSURL *jsCodeLocation;
-  [[RCTBundleURLProvider sharedSettings] setJsLocation: @"10.10.10.157"];
+//  [[RCTBundleURLProvider sharedSettings] setJsLocation: @"10.20.30.157"];
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
 
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
