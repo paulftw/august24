@@ -20,8 +20,11 @@ const firedb = firebase.firedb = firebase.database()
 
 export default class August24 extends Component {
   componentDidMount() {
-    alert('hello world')
-    firedb.ref('/foobar').update({a: 333})
+    try {
+        firedb.ref('/foobar').update({a: 3003})
+    } catch (err) {
+        alert('firedb update error: ' + JSON.stringify(err))
+    }
   }
   render() {
     return (

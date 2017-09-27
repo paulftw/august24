@@ -5,7 +5,7 @@ import android.app.Application;
 import com.facebook.react.ReactApplication;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.rt2zz.reactnativecontacts.ReactNativeContacts;
-import com.facebook.reactnative.androidsdk.FBSDKPackage;
+//import com.facebook.reactnative.androidsdk.FBSDKPackage;
 //import io.invertase.firebase.RNFirebasePackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -24,20 +24,20 @@ import io.invertase.firebase.database.RNFirebaseDatabasePackage; // Firebase Rea
 //import io.invertase.firebase.perf.RNFirebasePerformancePackage; // Firebase Performance
 //import io.invertase.firebase.storage.RNFirebaseStoragePackage; // Firebase Storage
 
-import com.facebook.FacebookSdk;
-import com.facebook.CallbackManager;
-import com.facebook.appevents.AppEventsLogger;
+//import com.facebook.FacebookSdk;
+//import com.facebook.CallbackManager;
+//import com.facebook.appevents.AppEventsLogger;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication {
 
-  private static CallbackManager mCallbackManager = CallbackManager.Factory.create();
+//  private static CallbackManager mCallbackManager = CallbackManager.Factory.create();
 
-  protected static CallbackManager getCallbackManager() {
-    return mCallbackManager;
-  }
+//  protected static CallbackManager getCallbackManager() {
+//    return mCallbackManager;
+//  }
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
 
@@ -52,7 +52,7 @@ public class MainApplication extends Application implements ReactApplication {
           new MainReactPackage(),
           new LinearGradientPackage(),
           new ReactNativeContacts(),
-          new FBSDKPackage(mCallbackManager),
+//          new FBSDKPackage(mCallbackManager),
           new RNFirebasePackage(),
           // Add these packages as appropriate
 //          new RNFirebaseAdMobPackage(),
