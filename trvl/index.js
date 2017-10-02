@@ -1,6 +1,13 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import RNative, { Dimensions, Image, StatusBar, StyleSheet, View } from 'react-native'
+import RNative, {
+  Dimensions,
+  ImageBackground,
+  StatusBar,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 
 const backgroundColor = '#12131E'
@@ -60,6 +67,8 @@ function mergeStyle(...styles) {
   return res
 }
 
+export { TouchableOpacity, View, }
+
 export class Hero extends Component {
   getPropsWithDefaults(parentProps) {
     const res = Object.assign({
@@ -77,9 +86,8 @@ export class Hero extends Component {
         marginRight: -this.context.screenMargin,
         marginBottom: verticalStep,
       }}>
-      <Image source={props.backgroundImage} style={{
+      <ImageBackground source={props.backgroundImage} style={{
           height: props.height,
-          resizeMode: 'cover',
           width: props.width,
         }}>
         <LinearGradient colors={['#0000', '#12131Eff']} style={{
@@ -96,7 +104,7 @@ export class Hero extends Component {
           }}>
           {this.props.children}
         </View>
-      </Image>
+      </ImageBackground>
     </View>
   }
 }
@@ -166,7 +174,7 @@ export class Screen extends Component {
     }}>
       <StatusBar hidden={true} barStyle='light-content' />
       {this.props.children}
-      <Text style={{color: '#fff'}}>{JSON.stringify(this.state)}</Text>
+
     </View>
   }
 }
@@ -311,6 +319,33 @@ export class BottomNav extends Component {
   render() {
     return <View style={null}>
       {this.props.children}
+    </View>
+  }
+}
+
+export class Button extends Component {
+  renderText(text) {
+    return <Text style={{
+      fontSize: fontSize.H1,
+      color: colorActive,
+    }}>
+      {text.toLocaleUpperCase()}
+    </Text>
+  }
+
+  render() {
+    return <View style={{
+        alignItems: 'center',
+        borderColor: colorActive,
+        borderRadius: 22.5,
+        borderWidth: 1,
+        height: 45,
+        justifyContent: 'center',
+        marginBottom: verticalStep,
+        marginLeft: 20,
+        marginRight: 20,
+      }}>
+      {this.props.label ? this.renderText(this.props.label) : this.props.children}
     </View>
   }
 }

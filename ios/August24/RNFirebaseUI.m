@@ -19,6 +19,8 @@ static UINavigationController* authViewController = nil;
 static RCTPromiseResolveBlock loginResolve = nil;
 static RCTPromiseRejectBlock loginReject = nil;
 
+static NSArray<id<FUIAuthProvider>> *authProviders = nil;
+
 RCT_EXPORT_METHOD(showLogin:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
   loginReject = reject;
@@ -28,11 +30,15 @@ RCT_EXPORT_METHOD(showLogin:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromise
     authUI = [FUIAuth defaultAuthUI];
     authUI.delegate = self;
     authUI.signInWithEmailHidden = true;
-    NSArray<id<FUIAuthProvider>> *providers = @[
-      // [[FUIFacebookAuth alloc] init],
-      [[FUIPhoneAuth alloc] initWithAuthUI:[FUIAuth defaultAuthUI]],
-    ];
-    authUI.providers = providers;
+
+    if (authProviders == nil) {
+      authProviders = @[
+        // [[FUIFacebookAuth alloc] init],
+        [[FUIPhoneAuth alloc] initWithAuthUI:[FUIAuth defaultAuthUI]],
+      ];
+    }
+
+    authUI.providers = authProviders;
   }
 
   dispatch_async(dispatch_get_main_queue(), ^{
@@ -99,6 +105,10 @@ RCT_EXPORT_METHOD(showLogin:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromise
 
         if (userInfo.email != nil) {
             [pData setValue: userInfo.email forKey:@"email"];
+        }
+
+        if (userInfo.phoneNumber != nil) {
+            [pData setValue: userInfo.phoneNumber forKey:@"phone"];
         }
 
         [output addObject:pData];
