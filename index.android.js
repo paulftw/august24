@@ -10,24 +10,31 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
-  View
+  View,
+  NativeModules
 } from 'react-native';
 
 const firebase = Firebase.initializeApp({
   persistence: true,
 })
 const firedb = firebase.firedb = firebase.database()
+const fireauth = firebase.auth = firebase.auth()
 
 export default class August24 extends Component {
   componentDidMount() {
-    alert('hello world')
-    firedb.ref('/foobar').update({a: 333})
+    // alert('hello world')
+    // firedb.ref('/foobar').update({a: 333})
+    if (fireauth.currentUser !== null) {
+      // fireauth.signOut();
+    } else {
+      NativeModules.RNFirebaseUIAuthPhoneExample.show();
+    }
   }
   render() {
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
-          Welcome to React Native!
+          Welcome to React Native 3!
         </Text>
         <Text style={styles.instructions}>
           To get started, edit index.android.js
