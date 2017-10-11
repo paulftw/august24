@@ -25,7 +25,7 @@ import {
   Title,
 } from '../trvl'
 
-export default class HomeLoggedIn extends Component {
+export default class Conversations extends Component {
   constructor(props) {
     super(props)
     this.state = {

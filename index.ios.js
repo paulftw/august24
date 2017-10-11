@@ -7,7 +7,7 @@ import {
 import firebase from './firebase'
 const firedb = firebase.firedb
 
-import HomeLoggedIn from './ui/HomeLoggedIn'
+import Conversations from './ui/Conversations'
 import LoadingScreen from './ui/LoadingScreen'
 import StartOnboarding from './ui/StartOnboarding'
 import Router from './ui/Router'
@@ -19,7 +19,7 @@ class August24 extends Component {
 
     this.router = new Router(this, {
       routes: {
-        'HomeLoggedIn': routeParams => <HomeLoggedIn />,
+        'Conversations': routeParams => <Conversations />,
         'LoadingScreen': routeParams => <LoadingScreen />,
         'StartOnboarding': routeParams => <StartOnboarding
             signIn={e => this.signIn()}
@@ -32,11 +32,9 @@ class August24 extends Component {
   async signIn() {
     try {
       const user = await NativeModules.RNFirebaseUI.showLogin()
-      user = await firebase.auth().getCurrentUser()
-      this.setState({
-        user
-      })
-      this.router.navigate('HomeLoggedIn')
+      user = firebase.getCurrentUser()
+      this.setState({ user })
+      this.router.navigate('Conversations')
     } catch (err) {
       // TODO: error reporting
       // err.nativeStackIOS = null
@@ -47,13 +45,11 @@ class August24 extends Component {
   componentDidMount() {
     this._ismounted = true
 
-    firebase.auth().onAuthStateChanged(user => {
+    firebase.addAuthListener(user => {
+      alert('got user ' + JSON.stringify(user))
       if (user) {
         // User is signed in.
-        this.setState({user})
-        this.router.navigate('HomeLoggedIn')
-        firedb.ref(`/users/${user.uid}/dataField`).set('set by the app')
-        firedb.ref(`/users/${user.uid}/phoneNumber`).set('x-x-x-x')
+        this.router.navigate('Conversations')
       } else {
         this.router.navigate('StartOnboarding')
       }
