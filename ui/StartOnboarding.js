@@ -13,7 +13,7 @@ import {
 
 export default class StartOnboarding extends Component {
 
-  onStartAuth(debug) {
+  async onStartAuth(debug) {
     if (debug) {
       // TODO add debug user
     }
