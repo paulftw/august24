@@ -9,6 +9,7 @@ import RNative, {
   View,
 } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
+import Icon from 'react-native-vector-icons/Ionicons'
 
 const backgroundColor = '#12131E'
 const fontRegular = 'Raleway-Regular'
@@ -21,6 +22,10 @@ const colorActive = '#12DFCA'
 
 const grayBG = '#1C1E2A'
 const lightGrayBG = '#262935'
+
+const footerBG = '#1E2029'
+const footerTextColorInactive = '#78797E'
+const footerTextColorActive = textColorLoud
 
 const fontSize = {
   heroH1: 32,
@@ -67,7 +72,7 @@ function mergeStyle(...styles) {
   return res
 }
 
-export { TouchableOpacity, View, }
+export { Icon, TouchableOpacity, View, }
 
 export class Hero extends Component {
   getPropsWithDefaults(parentProps) {
@@ -118,6 +123,7 @@ Hero.Title = class HeroTitle extends Component {
         color: textColorLoud,
         fontFamily: fontRegular,
         fontSize: fontSize.heroH1,
+        fontVariant: ['lining-nums'],
         marginBottom: smallStep,
         textShadowColor: '#0009',
         textShadowOffset: {width: -0.001, height: 0},
@@ -134,6 +140,7 @@ Hero.Subtitle = class HeroSubtitle extends Component {
         color: textColorLoud,
         fontFamily: fontMedium,
         fontSize: fontSize.heroH2,
+        fontVariant: ['lining-nums'],
         textShadowColor: '#0009',
         textShadowOffset: {width: -0.001, height: 0},
         textShadowRadius: 10,
@@ -197,6 +204,7 @@ SectionHeader.Text = (props) => (<RNative.Text style={{
       color: '#fff6',
       fontSize: fontSize.normal,
       fontFamily: fontMedium,
+      fontVariant: ['lining-nums'],
     }}>
     {props.children}
   </RNative.Text>)
@@ -234,6 +242,7 @@ export class Text extends Component {
         color: '#fff6',
         fontSize: fontSize.normal,
         fontFamily: fontRegular,
+        fontVariant: ['lining-nums'],
       }, this.props.style)}>
       {this.props.children}
     </RNative.Text>
@@ -246,6 +255,7 @@ export class Title extends Component {
         color: '#fff',
         fontSize: fontSize.H1,
         fontFamily: fontRegular,
+        fontVariant: ['lining-nums'],
         marginBottom: verticalStep,
       }}>
       {this.props.children}
@@ -317,10 +327,55 @@ export class Label extends Component {
 
 export class BottomNav extends Component {
   render() {
-    return <View style={null}>
+    return <View style={{
+        backgroundColor: footerBG,
+        flexDirection: 'row',
+        height: 60,
+        marginLeft: -this.context.screenMargin,
+        marginRight: -this.context.screenMargin,
+      }}>
       {this.props.children}
     </View>
   }
+}
+BottomNav.contextTypes = {
+  screenMargin: PropTypes.number.isRequired,
+}
+
+BottomNav.Button = class BottomNavButton extends Component {
+  render() {
+    return <TouchableOpacity
+      onPress={this.props.onPress}
+      style={{
+        alignItems: 'center',
+        flex: 1,
+        justifyContent: 'space-between',
+        paddingTop: 11,
+      }}>
+        {this.props.icon}
+
+        <Text style={{
+            color: this.props.active ? textColorLoud : textColorNormal,
+          }}>
+          {this.props.label}
+        </Text>
+
+        {!this.props.active ? <View style={{height: 1.5}} /> :
+          <View style={{
+            backgroundColor: colorActive,
+            height: 1.5,
+            shadowOffset: { width: -1, height: -1 },
+            shadowColor: colorActive,
+            shadowOpacity: 0.375,
+            width: '100%',
+          }}></View>
+        }
+      </TouchableOpacity>
+  }
+}
+
+BottomNav.icon = function(name, active) {
+  return <Icon name={name} color={active ? textColorLoud : textColorNormal} size={20} />
 }
 
 export class Button extends Component {

@@ -15,8 +15,10 @@ import Contacts from 'react-native-contacts'
 import {
   centerVertical,
   floatRight,
+  BottomNav,
   Hero,
   HighlightRow,
+  Icon,
   Label,
   Panel,
   Screen,
@@ -36,15 +38,12 @@ export default class Conversations extends Component {
     // this.tryLogin()
   }
 
-  componentDidMount() {
-  }
-
   render() {
     return (
       <Screen>
         <Hero backgroundImage={require('../assets/images/lavra1.jpg')}>
-          <Hero.Title>Logged In</Hero.Title>
-          <Hero.Subtitle>Hello</Hero.Subtitle>
+          <Hero.Title>Asdf ghs</Hero.Title>
+          <Hero.Subtitle>Hello1</Hero.Subtitle>
         </Hero>
 
         <ScrollView>
@@ -90,19 +89,21 @@ export default class Conversations extends Component {
           </Panel>*/}
         </ScrollView>
 
-        <SectionHeader>
-          <SectionHeader.Text>ЗАПРОСИТИ ДРУЗІВ</SectionHeader.Text>
-        </SectionHeader>
-
-        <Panel>
+        {/*<Panel>
           <Title>User: {JSON.stringify(this.state.user.providerData)}</Title>
           <TouchableOpacity onPress={e => this.pressFUI()}>
             <Text>Fire UI</Text>
           </TouchableOpacity>
           <Text>{JSON.stringify(this.state)}</Text>
-        </Panel>
+        </Panel>*/}
 
-        <Image source={{uri: this.state.photoUrl}} />
+        <Image source={{uri: this.state.photoUrl, height: 20, width: 20}} />
+
+        <BottomNav>
+          <BottomNav.Button active={false} onPress={e => this.navigate('Contacts')} icon={BottomNav.icon('ios-list-box-outline')} label='Контакти' />
+          <BottomNav.Button active={true}  onPress={e => this.scrollToTop()} icon={BottomNav.icon('ios-chatbubbles-outline', true)} label='Розмови' />
+          <BottomNav.Button active={false} onPress={e => this.navigate('Settings')} icon={BottomNav.icon('ios-settings-outline')} label='Налаштування' />
+        </BottomNav>
 
       </Screen>
     )

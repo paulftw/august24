@@ -1,4 +1,17 @@
 
+try {
+  let s = Symbol('asd')
+} catch (e) {
+  var Symbol = function(a) { return '' + a }
+}
+
+try {
+  let s = new Proxy({}, {})
+} catch (e) {
+  var Proxy = (o, p) => p
+}
+/**/
+
 function proxyHandler(args) {
   const names = Array.from(args).reduce((sum, el) => Object.assign(sum, {[el.name]: true}), {})
   return {
