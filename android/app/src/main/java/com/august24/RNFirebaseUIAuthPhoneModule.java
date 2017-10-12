@@ -19,6 +19,8 @@ import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 
+import java.util.Arrays;
+
 public class RNFirebaseUIAuthPhoneModule extends ReactContextBaseJavaModule {
 
   private static final int RC_SIGN_IN = 123;
@@ -41,9 +43,24 @@ public class RNFirebaseUIAuthPhoneModule extends ReactContextBaseJavaModule {
         // already signed in
     } else {
         // not signed in
+        // currentActivity.startActivityForResult(
+        //   // Get an instance of AuthUI based on the default app
+        //   AuthUI.getInstance().createSignInIntentBuilder().build(),
+        //   RC_SIGN_IN);
+
         currentActivity.startActivityForResult(
-          // Get an instance of AuthUI based on the default app
-          AuthUI.getInstance().createSignInIntentBuilder().build(),
+          AuthUI.getInstance()
+              .createSignInIntentBuilder()
+              .setAvailableProviders(
+                Arrays.asList(
+                  // new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
+                  new AuthUI.IdpConfig.Builder(AuthUI.PHONE_VERIFICATION_PROVIDER).build()
+                  // new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build(),
+                  // new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build(),
+                  // new AuthUI.IdpConfig.Builder(AuthUI.TWITTER_PROVIDER).build()
+                )
+              )
+              .build(),
           RC_SIGN_IN);
     }
   }
