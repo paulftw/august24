@@ -13,15 +13,12 @@ import {
 
 export default class StartOnboarding extends Component {
 
-  onStartAuth(debug) {
-    if (debug) {
-      // TODO add debug user
-    }
-
-    const result = await firebase.startAuth()
+  async onStartAuth(debug) {
+    const result = debug ? await firebase.signInDebugUser() : await firebase.startAuth()
     if (result) {
       this.props.gotoPermissions ? this.props.gotoPermissions() : alert('should send user to permissions')
     }
+    return result
   }
 
   render() {
@@ -33,9 +30,13 @@ export default class StartOnboarding extends Component {
           <Hero.Subtitle>Для доступу до мережі Вам необхідно зареєструватись</Hero.Subtitle>
         </Hero>
         <View style={{flex: 30}}></View>
-        <TouchableOpacity style={{flex: 20}} onPress={e => firebase.startAuth()}>
-          <Button label='Зареєструватись' />
-        </TouchableOpacity>
+        <View style={{flex: 20}}>
+          <TouchableOpacity
+              onPress={e => this.onStartAuth()}
+              onLongPress={e => this.onStartAuth(true)}>
+            <Button label='Зареєструватись' />
+          </TouchableOpacity>
+        </View>
       </Screen>
     )
   }

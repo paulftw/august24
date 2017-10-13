@@ -9,6 +9,9 @@ const AuthState = Enum('Unknown', 'SignedIn', 'NotSignedIn')
 
 const AUTH_EVENT_NAME = 'auth_state_changed'
 
+// WARNING: when disabling this you SHOULD also turn off anonymous sign in in the Firebase console
+const ALLOW_DEBUG_SIGN_IN = true
+
 class FirebaseController {
   constructor() {
     this.firebase = Firebase.initializeApp({
@@ -31,6 +34,9 @@ class FirebaseController {
   onAuthStateChanged(user) {
     this.authStatus = user ? AuthState.SignedIn : AuthState.NotSignedIn
     this.authUser = user
+    if (user) {
+      this.firedb.ref(`/users/${user.uid}/lastLogin`).set(Date.now())
+    }
     this.emitter.emit(AUTH_EVENT_NAME, user)
   }
 
@@ -55,9 +61,16 @@ class FirebaseController {
     } catch (err) {
       // TODO: error reporting
       // err.nativeStackIOS = null
-      alert('Нажаль Вас не було авторизовано.\n' + JSON.stringify(err).substring(100))
+      // alert('Нажаль Вас не було авторизовано.\n' + JSON.stringify(err).substring(100))
       return false
     }
+  }
+
+  async signInDebugUser() {
+    if (!ALLOW_DEBUG_SIGN_IN) {
+      return await this.startAuth()
+    }
+    return await this.firebase.auth().signInAnonymously()
   }
 }
 
