@@ -9,7 +9,7 @@ export default class Router {
 
   navigate(route, routeParams) {
     if (!this.routes[route]) {
-      throw new RuntimeError('Unknown route: ' + route)
+      throw new Error('Unknown route: ' + route)
     }
     const statePatch = {
       route,

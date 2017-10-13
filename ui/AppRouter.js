@@ -19,7 +19,9 @@ export default function createRouter(rootComponent) {
           bottomNav={new BottomNav(router)}
           contacts={rootComponent.state.contacts}
         />,
-      'Settings': routeParams => <Settings bottomNav={new BottomNav(router)} />,
+      'Settings': routeParams => <Settings bottomNav={new BottomNav(router)}
+          onLogout={e => rootComponent.onLogout()}
+        />,
 
       'LoadingScreen': routeParams => <LoadingScreen />,
 

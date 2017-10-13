@@ -11,6 +11,10 @@ export default class AppRoot extends Component {
     this.router = appRouter(this)
   }
 
+  async onLogout() {
+    return await firebase.signOut()
+  }
+
   componentDidMount() {
     this._ismounted = true
 
@@ -35,7 +39,7 @@ export default class AppRoot extends Component {
         })
 
       } else {
-        this.router.navigate('StartOnboarding')
+        this.router.navigate('OnboardingStart')
       }
     })
   }

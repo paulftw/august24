@@ -1,13 +1,7 @@
 import React, { Component } from 'react'
 import {
-  Dimensions,
-  Image,
-  ProgressViewIOS,
   ScrollView,
-  StatusBar,
-  StyleSheet,
   TouchableOpacity,
-  View,
 } from 'react-native'
 
 import Contacts from 'react-native-contacts'
@@ -15,7 +9,7 @@ import Contacts from 'react-native-contacts'
 import {
   centerVertical,
   floatRight,
-  BottomNav,
+  Button,
   Hero,
   HighlightRow,
   Icon,
@@ -28,14 +22,8 @@ import {
 } from '../trvl'
 
 export default class Conversations extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      foo: 'no foo yet',
-      user: 'anon',
-      contacts: [],
-    }
-    // this.tryLogin()
+  onLogout() {
+    this.props.onLogout ? this.props.onLogout() : alert('Нажаль ліниві програмісти не реалізували цю кнопку')
   }
 
   render() {
@@ -46,6 +34,11 @@ export default class Conversations extends Component {
         </Hero>
 
         <ScrollView>
+          <TouchableOpacity
+              onPress={e => this.onLogout()}
+              >
+            <Button label='Вийти з програми' />
+          </TouchableOpacity>
         </ScrollView>
 
         {this.props.bottomNav.render()}

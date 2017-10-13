@@ -6,7 +6,9 @@ admin.initializeApp(functions.config().firebase)
 
 let writePhoneNumberOnCreate = functions.auth.user().onCreate(event => {
   let user = event.data
-  admin.database().ref(`/users/${user.uid}/phoneNumber`).set(user.phoneNumber)
+  admin.database().ref(`/users/${user.uid}`.update({
+    phoneNumber: user.phoneNumber,
+  })
 })
 
 export { writePhoneNumberOnCreate }

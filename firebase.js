@@ -72,6 +72,10 @@ class FirebaseController {
     }
     return await this.firebase.auth().signInAnonymously()
   }
+
+  signOut() {
+    return this.firebase.auth().signOut()
+  }
 }
 
 const firebaseController = new FirebaseController()
