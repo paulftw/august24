@@ -42,51 +42,10 @@ export default class Conversations extends Component {
     return (
       <Screen>
         <Hero backgroundImage={require('../assets/images/lavra1.jpg')}>
-          <Hero.Title>Asdf ghs</Hero.Title>
-          <Hero.Subtitle>Hello1</Hero.Subtitle>
+          <Hero.Title>Налаштування</Hero.Title>
         </Hero>
 
         <ScrollView>
-          <SectionHeader>
-            <SectionHeader.Text>{this.state.contacts.length} ПАРТИЗАН</SectionHeader.Text>
-          </SectionHeader>
-
-          {this.state.contacts.map((c, key) => <TouchableOpacity key={key}>
-            <Panel>
-              <Title>{c.givenName} {c.familyName}</Title>
-              <Text>{JSON.stringify(c.phoneNumbers.map(pn => pn.number))}</Text>
-              <Label style={{container: Object.assign({}, floatRight(), centerVertical())}}>v5</Label>
-            </Panel>
-          </TouchableOpacity>)}
-          {/*<TouchableOpacity>
-            <Panel>
-              <Title>Игорь Еремин</Title>
-              <Text>Слава Україні!</Text>
-              <Label style={{container: Object.assign({}, floatRight(), centerVertical())}}>v5</Label>
-            </Panel>
-          </TouchableOpacity>
-
-          <TouchableOpacity>
-            <Panel>
-              <Title>Игорь Еремин</Title>
-              <Text>Слава Україні!</Text>
-              <Label style={{container: Object.assign({}, floatRight(), centerVertical())}}>v5</Label>
-            </Panel>
-          </TouchableOpacity>
-
-          <TouchableOpacity>
-            <Panel>
-              <Title>Павло Коржик</Title>
-              <Text>Слава Україні!</Text>
-              <Label type='transparent' style={{container: Object.assign({}, floatRight(), centerVertical())}}>&gt;</Label>
-            </Panel>
-          </TouchableOpacity>
-
-          <Panel>
-            <Title>Семен Семенченко</Title>
-            <Text>Героям Слава!</Text>
-            <Label style={{container: Object.assign({}, floatRight(), centerVertical())}}>3</Label>
-          </Panel>*/}
         </ScrollView>
 
         {this.props.bottomNav.render()}
