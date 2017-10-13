@@ -4,8 +4,6 @@ export default class Router {
   constructor(rootView, { routes, initialRoute, initialParams }) {
     this.routes = routes || {}
     this.rootView = rootView
-    this.route = initialRoute
-    this.routeParams = initialParams
     this.navigate(initialRoute, initialParams)
   }
 
@@ -22,6 +20,10 @@ export default class Router {
     } else {
       Object.assign(this.rootView.state, statePatch)
     }
+  }
+
+  getRoute() {
+    return this.rootView.state.route
   }
 
   render() {

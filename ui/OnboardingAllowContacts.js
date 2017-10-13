@@ -19,7 +19,7 @@ export default class OnboardingAllowContacts extends Component {
           <Hero.Subtitle>Нам потрібен доступ до Вашого списку контактів, щоб знайти Ваших друзів</Hero.Subtitle>
         </Hero>
         <View style={{flex: 10}}></View>
-        <TouchableOpacity style={{flex: 20}} onPress={e => this.props.signIn()}>
+        <TouchableOpacity style={{flex: 20}} onPress={e => alert('TODO: ask for contacts permission')}>
           <Button label='Завантажити контакти' />
         </TouchableOpacity>
       </Screen>

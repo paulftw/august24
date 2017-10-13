@@ -15,6 +15,7 @@ import Contacts from 'react-native-contacts'
 import {
   centerVertical,
   floatRight,
+  BottomNav,
   Hero,
   HighlightRow,
   Icon,
@@ -27,27 +28,25 @@ import {
 } from '../trvl'
 
 export default class Conversations extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      foo: 'no foo yet',
-      user: 'anon',
-      contacts: [],
-    }
-    // this.tryLogin()
-  }
-
   render() {
     return (
       <Screen>
         <Hero backgroundImage={require('../assets/images/lavra1.jpg')}>
-          <Hero.Title>Розмови</Hero.Title>
+          <Hero.Title>Контакти</Hero.Title>
         </Hero>
 
         <ScrollView>
           <SectionHeader>
-            <SectionHeader.Text>{this.state.contacts.length} РОЗМОВ</SectionHeader.Text>
+            <SectionHeader.Text>{this.props.contacts.length} ПАРТИЗАН</SectionHeader.Text>
           </SectionHeader>
+
+          {this.props.contacts.map((c, key) => <TouchableOpacity key={key}>
+            <Panel>
+              <Title>{c.name}</Title>
+              <Text>{JSON.stringify((c.phoneNumbers || []).map(pn => pn.number))}</Text>
+              <Label style={{container: Object.assign({}, floatRight(), centerVertical())}}>v5</Label>
+            </Panel>
+          </TouchableOpacity>)}
         </ScrollView>
 
         {this.props.bottomNav.render()}

@@ -16,7 +16,7 @@ export default class StartOnboarding extends Component {
   async onStartAuth(debug) {
     const result = debug ? await firebase.signInDebugUser() : await firebase.startAuth()
     if (result) {
-      this.props.gotoPermissions ? this.props.gotoPermissions() : alert('should send user to permissions')
+      this.props.onSuccess ? this.props.onSuccess() : alert('should send user to permissions')
     }
     return result
   }

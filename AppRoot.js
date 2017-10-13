@@ -18,6 +18,22 @@ export default class AppRoot extends Component {
       if (user) {
         // User is signed in.
         this.router.navigate('Conversations')
+
+        this.setState({
+          contacts: [
+            {
+              name: 'Ігор Єрьомін',
+              uid: 'foo',
+              isRegistered: true,
+            },
+            {
+              name: 'Павло Коржик',
+              uid: 'bar',
+              isRegistered: true,
+            },
+          ],
+        })
+
       } else {
         this.router.navigate('StartOnboarding')
       }
