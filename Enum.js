@@ -8,7 +8,7 @@ try {
 try {
   let s = new Proxy({}, {})
 } catch (e) {
-  var Proxy = (o, p) => p
+  var Proxy = (o, p) => o
 }
 /**/
 
@@ -32,8 +32,10 @@ export default function Enum() {
   }))
 
   symbols.forEach(sym => Object.defineProperty(res, sym.name, {
+    configurable: false,
     enumerable: true,
     value: sym.symbol,
+    writable: false,
   }))
-  return new Proxy(res, proxyHandler(symbols, symbols))
+  return new Proxy(res, proxyHandler(symbols))
 }

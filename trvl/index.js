@@ -5,6 +5,7 @@ import RNative, {
   ImageBackground,
   StatusBar,
   StyleSheet,
+  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native'
@@ -72,7 +73,7 @@ function mergeStyle(...styles) {
   return res
 }
 
-export { Icon, TouchableOpacity, View, }
+export { Icon, TextInput, TouchableOpacity, View, }
 
 export class Hero extends Component {
   getPropsWithDefaults(parentProps) {

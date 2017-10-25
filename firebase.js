@@ -9,6 +9,8 @@ const AuthState = Enum('Unknown', 'SignedIn', 'NotSignedIn')
 
 const AUTH_EVENT_NAME = 'auth_state_changed'
 
+const URL_API_SERVER = 'https://us-central1-sizzling-torch-7444.cloudfunctions.net/'
+
 // WARNING: when disabling this you SHOULD also turn off anonymous sign in in the Firebase console
 const ALLOW_DEBUG_SIGN_IN = true
 
@@ -23,21 +25,33 @@ class FirebaseController {
     this.networkStatus = NetworkState.Online
     this.authStatus = AuthState.Unknown
 
+    this.AuthStates = AuthState
+
     this.firebase.auth().onAuthStateChanged(user => this.onAuthStateChanged(user))
   }
 
   addAuthListener(fn) {
-    this.emitter.addListener(AUTH_EVENT_NAME, fn)
-    this.emitter.emit(AUTH_EVENT_NAME, this.authUser)
+    const subscription = this.emitter.addListener(AUTH_EVENT_NAME, fn)
+    if (this.authStatus !== AuthState.Unknown) {
+      fn({user: this.authUser, previousState: AuthState.Unknown, })
+    }
+
+    return subscription
   }
 
-  onAuthStateChanged(user) {
+  removeAuthListener(subscription) {
+    return this.emitter.removeSubscription(subscription)
+  }
+
+  async onAuthStateChanged(user) {
+    const previousState = this.authStatus
     this.authStatus = user ? AuthState.SignedIn : AuthState.NotSignedIn
     this.authUser = user
     if (user) {
-      this.firedb.ref(`/users/${user.uid}/lastLogin`).set(Date.now())
+      this.authUserToken = await user.getIdToken()
+      this.firedb.ref(`/users/${user.uid}/publicProfile/lastLogin`).set(Date.now())
     }
-    this.emitter.emit(AUTH_EVENT_NAME, user)
+    this.emitter.emit(AUTH_EVENT_NAME, { user, previousState, })
   }
 
   getCurrentUser() {
@@ -75,6 +89,18 @@ class FirebaseController {
 
   signOut() {
     return this.firebase.auth().signOut()
+  }
+
+  async rpc(route, params) {
+    const response = await fetch(URL_API_SERVER + route, {
+      method: 'POST',
+      body: JSON.stringify(params),
+      headers: {
+        'Authorization': 'Bearer ' + this.authUserToken,
+        'Content-Type': 'application/json',
+      },
+    })
+    return await response.json()
   }
 }
 
