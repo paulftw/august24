@@ -14,10 +14,13 @@ import Settings from './Settings'
 export default function createRouter(rootComponent) {
   const router = new Router(rootComponent, {
     routes: {
-      'Conversations': routeParams => <Conversations bottomNav={new BottomNav(router)} />,
+      'Conversations': routeParams => <Conversations
+          bottomNav={new BottomNav(router)}
+          conversations={rootComponent.state.conversations || []}
+        />,
       'Contacts': routeParams => <Contacts
           bottomNav={new BottomNav(router)}
-          contacts={rootComponent.state.contacts}
+          contacts={rootComponent.state.contacts || []}
         />,
       'Settings': routeParams => <Settings bottomNav={new BottomNav(router)}
           onLogout={e => rootComponent.onLogout()}

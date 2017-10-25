@@ -27,6 +27,8 @@ import {
   Title,
 } from '../trvl'
 
+import firebase from '../firebase'
+
 export default class Conversations extends Component {
   render() {
     return (
@@ -40,10 +42,9 @@ export default class Conversations extends Component {
             <SectionHeader.Text>{this.props.contacts.length} ПАРТИЗАН</SectionHeader.Text>
           </SectionHeader>
 
-          {this.props.contacts.map((c, key) => <TouchableOpacity key={key}>
+          {this.props.contacts.map((c, key) => <TouchableOpacity key={key} onPress={e=>firebase.rpc('debugEcho', {key: key})}>
             <Panel>
               <Title>{c.name}</Title>
-              <Text>{JSON.stringify((c.phoneNumbers || []).map(pn => pn.number))}</Text>
               <Label style={{container: Object.assign({}, floatRight(), centerVertical())}}>v5</Label>
             </Panel>
           </TouchableOpacity>)}

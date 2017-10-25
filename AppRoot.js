@@ -12,32 +12,23 @@ export default class AppRoot extends Component {
   }
 
   async onLogout() {
-    return await firebase.signOut()
+    const logoutResult = await firebase.signOut()
+    this.router.navigate('OnboardingStart')
+    return logoutResult
   }
 
   componentDidMount() {
     this._ismounted = true
 
-    firebase.addAuthListener(user => {
+    firebase.addAuthListener(({ user, previousState, }) => {
+      // Firebase may or may not start before the root component is mounted.
+      if (previousState !== firebase.AuthStates.Unknown) {
+        // Ignore all transitions after the initial load.
+        return
+      }
+
       if (user) {
-        // User is signed in.
         this.router.navigate('Conversations')
-
-        this.setState({
-          contacts: [
-            {
-              name: 'Ігор Єрьомін',
-              uid: 'foo',
-              isRegistered: true,
-            },
-            {
-              name: 'Павло Коржик',
-              uid: 'bar',
-              isRegistered: true,
-            },
-          ],
-        })
-
       } else {
         this.router.navigate('OnboardingStart')
       }

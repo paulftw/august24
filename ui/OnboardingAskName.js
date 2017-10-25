@@ -7,6 +7,7 @@ import {
   Hero,
   Screen,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
 } from '../trvl'
@@ -16,7 +17,7 @@ export default class OnboardingAskName extends Component {
   async onStartAuth(debug) {
     const result = debug ? await firebase.signInDebugUser() : await firebase.startAuth()
     if (result) {
-      this.props.gotoPermissions ? this.props.gotoPermissions() : alert('should send user to permissions')
+      this.props.onSuccess()
     }
     return result
   }
@@ -29,7 +30,7 @@ export default class OnboardingAskName extends Component {
           <Hero.Subtitle>Як Вас звати?</Hero.Subtitle>
         </Hero>
         <View style={{flex: 30}}>
-          <Input></Input>
+          <TextInput />
         </View>
         <View style={{flex: 20}}>
           <TouchableOpacity

@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -592,6 +593,7 @@
 				0D818FCBE0C0521F442A3363 /* Pods */,
 				01AF228541045D2AEC1DA98F /* Frameworks */,
 				CD7BD3D6DD7C4C248D5D7F9A /* Resources */,
+				DA3DE71E1F94D34800A02A30 /* Recovered References */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -635,6 +637,17 @@
 				2C77A0C1D2FA4F59924D008E /* Zocial.ttf */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		DA3DE71E1F94D34800A02A30 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				239ACAB916F84080BF001651 /* libRCTContacts.a */,
+				BEAD7BE37410403E9E94FB6A /* libRNFirebase.a */,
+				167FD6B391B842DFBF8A508D /* libBVLinearGradient.a */,
+				213CC75E6D024D9D8FCCC2F9 /* libRNVectorIcons.a */,
+			);
+			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 		DA73B84A1F75724300F29478 /* Products */ = {

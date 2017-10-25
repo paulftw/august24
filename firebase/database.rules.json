@@ -8,8 +8,14 @@
           ".read": true,
           ".write": false
         },
-        ".read": "$uid === auth.uid",
-        ".write": "$uid === auth.uid"
+        "publicProfile": {
+          ".read": true,
+          ".write": "$uid === auth.uid"
+        },
+        "installFlow": {
+          ".read": "$uid === auth.uid",
+          ".write": "$uid === auth.uid"
+        }
       }
     }
   }
