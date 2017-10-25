@@ -47,8 +47,8 @@ export default class Settings extends Component {
 
   displayUser(user) {
     const fields = Object.keys(user).map(k => {
-      const val = typeof user[k] === 'string' ? '' + user[k] : (JSON.stringify(user[k]) || 'undefined')
-      `  ${k}: ${val.length <= 32 ? val : val.substring(0, 30) + '...'}`
+      const val = typeof user[k] === 'string' ? ('' + user[k]) : (JSON.stringify(user[k]) || 'undefined')
+      return `  ${k}: ${val.length <= 32 ? val : val.substring(0, 30) + '...'}`
     })
     return ['{', ...fields, '}'].join('\n')
   }
