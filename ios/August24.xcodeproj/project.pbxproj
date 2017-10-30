@@ -42,6 +42,8 @@
 		C808D2D2945C442C8CCB78E0 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 20619D3CB933457B94B367C7 /* Feather.ttf */; };
 		DA0C14A81F75C25D006E2F5E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DA0C14A71F75C25D006E2F5E /* GoogleService-Info.plist */; };
 		DA17FB6D1F75C33D0018ACBF /* RNFirebaseUI.m in Sources */ = {isa = PBXBuildFile; fileRef = DA17FB6C1F75C33D0018ACBF /* RNFirebaseUI.m */; };
+		DA3041111FA770640035C101 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = DA3041131FA770640035C101 /* InfoPlist.strings */; };
+		DA3041161FA771080035C101 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DA3041151FA771080035C101 /* Info.plist */; };
 		DC875D527A564160BE51B7D4 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2C77A0C1D2FA4F59924D008E /* Zocial.ttf */; };
 		EF39840BFDFD4EDFAB2FC7CE /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2385DAE86B324371883A11AB /* MaterialIcons.ttf */; };
 		F14C55FBD2E2438793431779 /* Raleway-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 09249C74B5D241B9970CBEFF /* Raleway-Medium.ttf */; };
@@ -311,7 +313,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTActionSheet.xcodeproj; path = "../node_modules/react-native/Libraries/ActionSheetIOS/RCTActionSheet.xcodeproj"; sourceTree = "<group>"; };
 		00C302B51ABCB90400DB3ED1 /* RCTGeolocation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTGeolocation.xcodeproj; path = "../node_modules/react-native/Libraries/Geolocation/RCTGeolocation.xcodeproj"; sourceTree = "<group>"; };
 		00C302BB1ABCB91800DB3ED1 /* RCTImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTImage.xcodeproj; path = "../node_modules/react-native/Libraries/Image/RCTImage.xcodeproj"; sourceTree = "<group>"; };
@@ -328,7 +329,6 @@
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = August24/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = August24/Images.xcassets; sourceTree = "<group>"; };
-		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = August24/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = August24/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		15749425C3BD470ABA970960 /* RNFirebase.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFirebase.xcodeproj; path = "../node_modules/react-native-firebase/ios/RNFirebase.xcodeproj"; sourceTree = "<group>"; };
@@ -360,6 +360,9 @@
 		DA0C14A71F75C25D006E2F5E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DA17FB6B1F75C33D0018ACBF /* RNFirebaseUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RNFirebaseUI.h; path = August24/RNFirebaseUI.h; sourceTree = "<group>"; };
 		DA17FB6C1F75C33D0018ACBF /* RNFirebaseUI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RNFirebaseUI.m; path = August24/RNFirebaseUI.m; sourceTree = "<group>"; };
+		DA30410A1FA76B510035C101 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		DA3041121FA770640035C101 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		DA3041151FA771080035C101 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = August24/Info.plist; sourceTree = "<group>"; };
 		DA8A1C931F75C3D8008EEB3B /* August24.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = August24.entitlements; path = August24/August24.entitlements; sourceTree = "<group>"; };
 		EF07753AD20746048F2D66AB /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		EFA8D6BAA00F4F24B6FDB368 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
@@ -499,15 +502,15 @@
 		13B07FAE1A68108700A75B9A /* August24 */ = {
 			isa = PBXGroup;
 			children = (
+				DA3041151FA771080035C101 /* Info.plist */,
 				DA8A1C931F75C3D8008EEB3B /* August24.entitlements */,
 				DA17FB6B1F75C33D0018ACBF /* RNFirebaseUI.h */,
 				DA17FB6C1F75C33D0018ACBF /* RNFirebaseUI.m */,
-				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
-				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
+				DA3041131FA770640035C101 /* InfoPlist.strings */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
 			name = August24;
@@ -1107,7 +1110,9 @@
 				6935ADE097C5474AAAC0188B /* Raleway-SemiBold.ttf in Resources */,
 				DA0C14A81F75C25D006E2F5E /* GoogleService-Info.plist in Resources */,
 				A40E73052E2149449118DF77 /* Entypo.ttf in Resources */,
+				DA3041111FA770640035C101 /* InfoPlist.strings in Resources */,
 				1DF53F1F29C14DFA918F13E8 /* EvilIcons.ttf in Resources */,
+				DA3041161FA771080035C101 /* Info.plist in Resources */,
 				C808D2D2945C442C8CCB78E0 /* Feather.ttf in Resources */,
 				856DE054DDB047099ED6FD9B /* FontAwesome.ttf in Resources */,
 				7A5FF754CA1546B19213DE2F /* Foundation.ttf in Resources */,
@@ -1288,8 +1293,18 @@
 			isa = PBXVariantGroup;
 			children = (
 				13B07FB21A68108700A75B9A /* Base */,
+				DA30410A1FA76B510035C101 /* uk */,
 			);
 			name = LaunchScreen.xib;
+			path = August24;
+			sourceTree = "<group>";
+		};
+		DA3041131FA770640035C101 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DA3041121FA770640035C101 /* uk */,
+			);
+			name = InfoPlist.strings;
 			path = August24;
 			sourceTree = "<group>";
 		};
@@ -1373,6 +1388,7 @@
 					"-ObjC",
 					"-lc++",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = August24;
 				PROVISIONING_PROFILE = "6739701f-7ab9-4e59-b701-7904831f23f0";
 				PROVISIONING_PROFILE_SPECIFIER = "Firebase August24 Dev Profile";
@@ -1403,6 +1419,7 @@
 					"-ObjC",
 					"-lc++",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = August24;
 				PROVISIONING_PROFILE = "6739701f-7ab9-4e59-b701-7904831f23f0";
 				PROVISIONING_PROFILE_SPECIFIER = "Firebase August24 Dev Profile";
@@ -1414,6 +1431,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -1455,6 +1473,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;

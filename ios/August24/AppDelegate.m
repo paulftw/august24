@@ -16,6 +16,8 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 
+#import <React/RCTLog.h>
+
 @implementation AppDelegate
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
@@ -41,8 +43,10 @@
   [[UNUserNotificationCenter currentNotificationCenter] setDelegate:self];
 
   NSURL *jsCodeLocation;
-  [[RCTBundleURLProvider sharedSettings] setJsLocation: @"192.168.2.227"];
+//  [[RCTBundleURLProvider sharedSettings] setJsLocation: @"192.168.2.227"];
+  [[RCTBundleURLProvider sharedSettings] setJsLocation: nil];
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
+//  RCTLogInfo(@"jsCodeLocation: %@", jsCodeLocation);
 
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"August24"

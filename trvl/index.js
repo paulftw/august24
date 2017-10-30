@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import RNative, {
+  ActivityIndicator,
   Dimensions,
   ImageBackground,
   StatusBar,
@@ -188,6 +189,12 @@ export class Screen extends Component {
 }
 Screen.childContextTypes = {
   screenMargin: PropTypes.number.isRequired,
+}
+
+export class Spinner extends Component {
+  render() {
+    return <ActivityIndicator animated={true} color={colorActive} size='large' />
+  }
 }
 
 export class SectionHeader extends Component {
