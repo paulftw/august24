@@ -25,7 +25,3 @@ pod 'FirebaseUI/Auth', '~> 4.0'
 pod 'FirebaseUI/Phone', '~> 4.0'
 
 pod 'RNFirebase', :path => '../node_modules/react-native-firebase'
-
-pod 'FBSDKCoreKit'
-pod 'FBSDKLoginKit'
-pod 'FBSDKShareKit'
