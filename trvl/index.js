@@ -230,6 +230,37 @@ export class Panel extends Component {
   }
 }
 
+export class TabBar extends Component {
+  render() {
+    return <View style={{
+      flexDirection: 'row',
+      justifyContent: 'center',
+      marginBottom: verticalStep,
+    }}>
+      {this.props.children}
+    </View>
+  }
+}
+
+export class Tab extends Component {
+  render() {
+    return <TouchableOpacity style={{
+          padding: smallStep,
+          borderColor: this.props.active ? colorActive : '#9000',
+          borderRadius: 1000,
+          borderWidth: 1,
+          alignItems: 'center',
+          width: 80,
+        }}
+        onPress={this.props.onPress}
+        >
+      <Text style={{
+        color: this.props.active ? colorActive : textColorNormal,
+      }}>{this.props.label}</Text>
+    </TouchableOpacity>
+  }
+}
+
 export class HighlightRow extends Component {
   render() {
     return <View style={{

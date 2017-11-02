@@ -47,7 +47,7 @@ let debugEcho = authenticatedHandler((user, req, res) => {
   return req.body
 })
 
-export { debugEcho as debugEcho }
+export { debugEcho }
 
 let writePhoneNumberOnCreate = functions.auth.user().onCreate(event => {
   let user = event.data

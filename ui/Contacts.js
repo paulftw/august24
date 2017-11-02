@@ -23,6 +23,8 @@ import {
   Panel,
   Screen,
   SectionHeader,
+  Tab,
+  TabBar,
   Text,
   Title,
 } from '../trvl'
@@ -30,12 +32,29 @@ import {
 import firebase from '../firebase'
 
 export default class Conversations extends Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      filter: 'inNetwork',
+    }
+  }
+
+  setFilter(filter) {
+    this.setState({filter})
+  }
+
   render() {
     return (
       <Screen>
         <Hero backgroundImage={require('../assets/images/lavra1.jpg')}>
           <Hero.Title>Контакти</Hero.Title>
         </Hero>
+
+        <TabBar>
+          <Tab label="В загоні" active={this.state.filter === 'inNetwork'} onPress={e => this.setFilter('inNetwork')} />
+          <Tab label="Всі" active={this.state.filter === 'all'} onPress={e => this.setFilter('all')} />
+        </TabBar>
 
         <ScrollView>
           <SectionHeader>
