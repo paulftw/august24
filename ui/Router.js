@@ -1,5 +1,7 @@
 import React, { Component, Text } from 'react'
 
+import { DEBUG, DebugOverlay, debugValue, } from '../debugtools'
+
 export default class Router {
   constructor(rootView, { routes, initialRoute, initialParams }) {
     this.routes = routes || {}
@@ -8,6 +10,7 @@ export default class Router {
   }
 
   navigate(route, routeParams) {
+    DEBUG && debugValue('route', route)
     if (!this.routes[route]) {
       throw new Error('Unknown route: ' + route)
     }
@@ -32,6 +35,11 @@ export default class Router {
     // alert(`Route: ${route} viewFn: ${viewFn}`)
     if (!viewFn) {
       return <Text style={{ color: 'red', fontSize: 32, }}>Unknown route name: {route}</Text>
+    }
+    if (DEBUG) {
+      return <DebugOverlay>
+        {viewFn(routeParams)}
+      </DebugOverlay>
     }
     return viewFn(routeParams)
   }

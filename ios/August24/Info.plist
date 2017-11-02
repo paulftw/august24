@@ -25,6 +25,7 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
+				<string>com.googleusercontent.apps.916130872955-djs1uqqvib7nfo01bblb0dit7kktbtsa</string>
 				<string>fb279904149141812</string>
 			</array>
 		</dict>
@@ -62,7 +63,7 @@
 	<key>NSContactsUsageDescription</key>
 	<string>We use your phone contacts to build the list of your friends</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string></string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Raleway-Regular.ttf</string>

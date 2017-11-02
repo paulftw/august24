@@ -22,6 +22,9 @@ import {
   View,
 } from '../trvl'
 
+import { DEBUG } from '../debugtools'
+import * as Debug from '../debugtools'
+
 export default class Settings extends Component {
   constructor(props) {
     super(props)
@@ -31,11 +34,6 @@ export default class Settings extends Component {
     this.props.onLogout ? this.props.onLogout() : alert('Нажаль ліниві програмісти не реалізували цю кнопку')
   }
 
-  async onDebug() {
-    const resp = await firebase.rpc('debugEcho', {a: 300, x: 16, })
-    alert('echo Resp ' + JSON.stringify(resp))
-  }
-
   componentDidMount() {
     this.authSubscription = firebase.addAuthListener(({user, previousState}) => {
       this.setState({ user: firebase.authUser })
@@ -43,14 +41,6 @@ export default class Settings extends Component {
   }
   componentWillUnmount() {
     firebase.removeAuthListener(this.authSubscription)
-  }
-
-  displayUser(user) {
-    const fields = Object.keys(user).map(k => {
-      const val = typeof user[k] === 'string' ? ('' + user[k]) : (JSON.stringify(user[k]) || 'undefined')
-      return `  ${k}: ${val.length <= 32 ? val : val.substring(0, 30) + '...'}`
-    })
-    return ['{', ...fields, '}'].join('\n')
   }
 
   render() {
@@ -67,15 +57,17 @@ export default class Settings extends Component {
             <Button label='Вийти з програми' />
           </TouchableOpacity>
 
-          <TouchableOpacity
-              onPress={e => this.onDebug()}
-              >
-            <Button label='Debug' />
-          </TouchableOpacity>
+          {!DEBUG ? null :
+            <View>
+              <TouchableOpacity
+                  onPress={e => Debug.performDebugRpc()}
+                  >
+                <Button label='Debug' />
+              </TouchableOpacity>
+              <Text>user: {this.state.user ? Debug.jsonShort(this.state.user.toJSON()) : 'null?'}{'\n'}token: {`${(firebase.authUserToken || '').substring(0, 32)}...`}</Text>
+            </View>
+          }
 
-          <View>
-            <Text>user: {this.state.user ? this.displayUser(this.state.user.toJSON()) : 'null?'}{'\n'}token: {`${(firebase.authUserToken || '').substring(0, 32)}...`}</Text>
-          </View>
         </ScrollView>
 
         {this.props.bottomNav.render()}

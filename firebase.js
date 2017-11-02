@@ -3,6 +3,7 @@ import { NativeModules, Platform, } from 'react-native'
 import Firebase from 'react-native-firebase'
 
 import Enum from './Enum'
+import * as Debug from './debugtools'
 
 const NetworkState = Enum('Offline', 'Online')
 const AuthState = Enum('Unknown', 'SignedIn', 'NotSignedIn')
@@ -16,9 +17,7 @@ const ALLOW_DEBUG_SIGN_IN = true
 
 class FirebaseController {
   constructor() {
-    this.firebase = Firebase.initializeApp({
-      persistence: true,
-    })
+    this.firebase = Firebase.app()
     this.firedb = this.firebase.database()
     this.emitter = new EventEmitter()
 
@@ -59,6 +58,7 @@ class FirebaseController {
   }
 
   async startAuth() {
+    Debug.log('entered startAuth')
     try {
       let uiResult = null
       if (Platform.OS === 'ios') {
@@ -69,13 +69,13 @@ class FirebaseController {
         alert('OMG як ви попали на платформу ' + Platform.OS)
         return null
       }
-      user = await this.firebase.auth().getCurrentUser()
-      this.setState({ user })
-      return true
+      Debug.log('uiResult = ', uiResult)
+      return await this.firebase.auth().getCurrentUser()
     } catch (err) {
       // TODO: error reporting
       // err.nativeStackIOS = null
       // alert('Нажаль Вас не було авторизовано.\n' + JSON.stringify(err).substring(100))
+      Debug.log('error ', err)
       return false
     }
   }

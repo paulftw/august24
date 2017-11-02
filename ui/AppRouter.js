@@ -10,6 +10,7 @@ import OnboardingStart from './OnboardingStart'
 import Router from './Router'
 import Settings from './Settings'
 
+import { log } from '../debugtools'
 
 export default function createRouter(rootComponent) {
   const router = new Router(rootComponent, {
@@ -29,7 +30,7 @@ export default function createRouter(rootComponent) {
       'LoadingScreen': routeParams => <LoadingScreen />,
 
       'OnboardingStart': routeParams => <OnboardingStart
-          onSuccess={() => router.navigate('OnboardingAskName')}
+          onSuccess={() => {log('onboarding success'); router.navigate('OnboardingAskName')}}
         />,
       'OnboardingAskName': routeParams => <OnboardingAskName
           onSuccess={() => router.navigate('OnboardingAllowContacts')}
@@ -42,3 +43,5 @@ export default function createRouter(rootComponent) {
   })
   return router
 }
+
+log('Router initialized')

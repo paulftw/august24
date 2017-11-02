@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 
+import { DEBUG, log } from '../debugtools'
 import firebase from '../firebase'
 
 import {
@@ -14,11 +15,17 @@ import {
 export default class StartOnboarding extends Component {
 
   async onStartAuth(debug) {
-    const result = debug ? await firebase.signInDebugUser() : await firebase.startAuth()
+    log('starting auth debug=', debug)
+    const result = (DEBUG && debug) ? await firebase.signInDebugUser() : await firebase.startAuth()
+    log('firebase signin result', result)
     if (result) {
       this.props.onSuccess ? this.props.onSuccess() : alert('should send user to permissions')
     }
     return result
+  }
+
+  componentDidMount() {
+    log('mounted StartOnboarding')
   }
 
   render() {
