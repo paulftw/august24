@@ -45,6 +45,8 @@ export default class Conversations extends Component {
   }
 
   render() {
+    const contacts = this.state.filter === 'all' ? this.props.contacts
+        : this.props.contacts.filter(c => c.userId)
     return (
       <Screen>
         <Hero backgroundImage={require('../assets/images/lavra1.jpg')}>
@@ -52,21 +54,22 @@ export default class Conversations extends Component {
         </Hero>
 
         <TabBar>
-          <Tab label="В загоні" active={this.state.filter === 'inNetwork'} onPress={e => this.setFilter('inNetwork')} />
-          <Tab label="Всі" active={this.state.filter === 'all'} onPress={e => this.setFilter('all')} />
+          <Tab title="Свої" active={this.state.filter === 'inNetwork'} onPress={e => this.setFilter('inNetwork')} />
+          <Tab title="Всі" active={this.state.filter === 'all'} onPress={e => this.setFilter('all')} />
         </TabBar>
 
         <ScrollView>
           <SectionHeader>
-            <SectionHeader.Text>{this.props.contacts.length} ПАРТИЗАН</SectionHeader.Text>
+            <SectionHeader.Text>{contacts.length} ПАРТИЗАН</SectionHeader.Text>
           </SectionHeader>
 
-          {this.props.contacts.map((c, key) => <TouchableOpacity key={key} onPress={e=>firebase.rpc('debugEcho', {key: key})}>
-            <Panel>
-              <Title>{c.name}</Title>
-              <Label style={{container: Object.assign({}, floatRight(), centerVertical())}}>v5</Label>
-            </Panel>
-          </TouchableOpacity>)}
+          {contacts.map((c, key) => <TouchableOpacity key={key}>
+              <Panel>
+                <Title>{c.name}</Title>
+                <Text>{c.phonenumber}</Text>
+              </Panel>
+            </TouchableOpacity>)
+          }
         </ScrollView>
 
         {this.props.bottomNav.render()}

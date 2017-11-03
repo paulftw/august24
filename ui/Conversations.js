@@ -1,3 +1,6 @@
+import moment from 'moment/min/moment-with-locales'
+moment.locale('uk')
+
 import React, { Component } from 'react'
 import {
   Dimensions,
@@ -34,7 +37,6 @@ export default class Conversations extends Component {
       user: 'anon',
       contacts: [],
     }
-    // this.tryLogin()
   }
 
   render() {
@@ -46,8 +48,26 @@ export default class Conversations extends Component {
 
         <ScrollView>
           <SectionHeader>
-            <SectionHeader.Text>{this.state.contacts.length} РОЗМОВ</SectionHeader.Text>
+            <SectionHeader.Text>{this.props.conversations.length} РОЗМОВ</SectionHeader.Text>
           </SectionHeader>
+
+          {this.props.conversations.map((c, key) => {
+            const unreadCount = c.messageCount - c.readCount
+            return <TouchableOpacity key={key}>
+              <Panel>
+                <Title>Чат</Title>
+                <Text>{moment(c.lastMessageTimestamp).locale('uk').fromNow()}</Text>
+                {unreadCount
+                  ? <Label style={{container: Object.assign({}, floatRight(), centerVertical())}}>
+                    {unreadCount}
+                  </Label>
+                  : <Label type='transparent' style={{container: Object.assign({}, floatRight(), centerVertical())}}>
+                    {c.messageCount}
+                  </Label>
+                }
+              </Panel>
+            </TouchableOpacity>
+          })}
         </ScrollView>
 
         {this.props.bottomNav.render()}

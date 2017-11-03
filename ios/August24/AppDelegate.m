@@ -26,7 +26,7 @@
   [[UNUserNotificationCenter currentNotificationCenter] setDelegate:self];
 
   NSURL *jsCodeLocation;
-//  [[RCTBundleURLProvider sharedSettings] setJsLocation: @"192.168.2.227"];
+//  [[RCTBundleURLProvider sharedSettings] setJsLocation: @"192.168.2.229"];
   [[RCTBundleURLProvider sharedSettings] setJsLocation: nil];
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
 //  RCTLogInfo(@"jsCodeLocation: %@", jsCodeLocation);

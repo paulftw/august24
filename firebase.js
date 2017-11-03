@@ -4,6 +4,7 @@ import Firebase from 'react-native-firebase'
 
 import Enum from './Enum'
 import * as Debug from './debugtools'
+import DataModel from './DataModel'
 
 const NetworkState = Enum('Offline', 'Online')
 const AuthState = Enum('Unknown', 'SignedIn', 'NotSignedIn')
@@ -11,9 +12,6 @@ const AuthState = Enum('Unknown', 'SignedIn', 'NotSignedIn')
 const AUTH_EVENT_NAME = 'auth_state_changed'
 
 const URL_API_SERVER = 'https://us-central1-sizzling-torch-7444.cloudfunctions.net/'
-
-// WARNING: when disabling this you SHOULD also turn off anonymous sign in in the Firebase console
-const ALLOW_DEBUG_SIGN_IN = true
 
 class FirebaseController {
   constructor() {
@@ -57,6 +55,10 @@ class FirebaseController {
     return this.authUser
   }
 
+  getDataModel() {
+    return new DataModel(this.firedb)
+  }
+
   async startAuth() {
     Debug.log('entered startAuth')
     try {
@@ -81,7 +83,7 @@ class FirebaseController {
   }
 
   async signInDebugUser() {
-    if (!ALLOW_DEBUG_SIGN_IN) {
+    if (!Debug.DEBUG) {
       return await this.startAuth()
     }
     return await this.firebase.auth().signInAnonymously()

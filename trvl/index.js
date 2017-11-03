@@ -256,7 +256,7 @@ export class Tab extends Component {
         >
       <Text style={{
         color: this.props.active ? colorActive : textColorNormal,
-      }}>{this.props.label}</Text>
+      }}>{this.props.title}</Text>
     </TouchableOpacity>
   }
 }
