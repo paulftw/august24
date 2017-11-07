@@ -2,6 +2,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import RNative, {
   ActivityIndicator,
+  Animated,
   Dimensions,
   ImageBackground,
   StatusBar,
@@ -12,6 +13,8 @@ import RNative, {
 } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import Icon from 'react-native-vector-icons/Ionicons'
+
+import Transition from '../react-native-style-transition'
 
 const backgroundColor = '#12131E'
 const fontRegular = 'Raleway-Regular'
@@ -244,19 +247,22 @@ export class TabBar extends Component {
 
 export class Tab extends Component {
   render() {
-    return <TouchableOpacity style={{
+    return <TouchableOpacity onPress={this.props.onPress}>
+      <Transition duration={500} style={{
           padding: smallStep,
-          borderColor: this.props.active ? colorActive : '#9000',
+          borderColor: this.props.active ? colorActive : '#0000',
           borderRadius: 1000,
           borderWidth: 1,
           alignItems: 'center',
           width: 80,
         }}
-        onPress={this.props.onPress}
         >
-      <Text style={{
+      <Transition component={Text} duration={500} style={{
         color: this.props.active ? colorActive : textColorNormal,
-      }}>{this.props.title}</Text>
+      }}>
+        {this.props.title}
+      </Transition>
+      </Transition>
     </TouchableOpacity>
   }
 }
@@ -277,14 +283,14 @@ export class HighlightRow extends Component {
 
 export class Text extends Component {
   render() {
-    return <RNative.Text style={mergeStyle({
+    return <Animated.Text style={mergeStyle({
         color: '#fff6',
         fontSize: fontSize.normal,
         fontFamily: fontRegular,
         fontVariant: ['lining-nums'],
       }, this.props.style)}>
       {this.props.children}
-    </RNative.Text>
+    </Animated.Text>
   }
 }
 
