@@ -10,14 +10,15 @@ export default class TweenValue {
     this.target = startValue
   }
 
-  setTarget(target, {duration, easing}) {
+  setTarget(target, { duration, easing, }) {
     if (this.target == target) {
       return
     }
 
     this.killAnimation()
 
-    if (this.startValue === null || this.startValue === undefined
+    if (!duration
+        || this.startValue === null || this.startValue === undefined
         || target === null || target === undefined) {
       this.setStart(target)
       return

@@ -248,18 +248,22 @@ export class TabBar extends Component {
 export class Tab extends Component {
   render() {
     return <TouchableOpacity onPress={this.props.onPress}>
-      <Transition duration={500} style={{
+      <Transition
+        duration={300}
+        style={{
           padding: smallStep,
-          borderColor: this.props.active ? colorActive : '#0000',
+          borderColor: this.props.active ? colorActive : 'transparent',
           borderRadius: 1000,
           borderWidth: 1,
           alignItems: 'center',
           width: 80,
         }}
         >
-      <Transition component={Text} duration={500} style={{
-        color: this.props.active ? colorActive : textColorNormal,
-      }}>
+      <Transition component={Text}
+          duration={300}
+          style={{
+            color: this.props.active ? colorActive : textColorNormal,
+          }}>
         {this.props.title}
       </Transition>
       </Transition>

@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import {
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native'
 
 import firebase from './firebase'
 
-const DEBUG = false
+const DEBUG = true
 // TODO: disable anonymous sign in in production
 
 export { DEBUG }
@@ -30,8 +31,9 @@ export function debugValue(key, value) {
 }
 
 function shortString(val) {
+  const LEN = 128
   val = typeof val === 'string' ? ('' + val) : (JSON.stringify(val) || 'undefined')
-  return val.length <= 32 ? val : val.substring(0, 30) + '...'
+  return val.length <= LEN ? val : val.substring(0, LEN - 3) + '...'
 }
 
 export function jsonShort(value) {
@@ -43,6 +45,10 @@ export function jsonShort(value) {
 }
 
 export class DebugOverlay extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {}
+  }
 
   renderSticky() {
     const list = Object.entries(debugSticky).map((el, indx) => <View key={indx}><Text>{el[0]}: {jsonShort(el[1])}</Text></View>)
@@ -64,21 +70,28 @@ export class DebugOverlay extends Component {
     clearInterval(this.timer)
   }
 
+  hideSelf(duration) {
+    this.setState({hidden: true})
+    setTimeout(e => this.setState({hidden: false}), duration)
+  }
+
 
   render() {
     return <View style={{ flex: 1 }}>
-      <View style={{
-        backgroundColor: '#fff9',
-        position: 'absolute',
-        right: 5,
-        top: 32,
-        width: 200,
-        // height: 32,
-        zIndex: 10000,
-      }}>
+      {this.state.hidden ? null : <TouchableOpacity
+          onPress={e => this.hideSelf(5000)}
+          onLongPress={e => this.hideSelf(30 * 1000)}
+          style={{
+            backgroundColor: '#fff9',
+            position: 'absolute',
+            right: 5,
+            top: 32,
+            width: 360,
+            zIndex: 10000,
+          }}>
         {this.renderSticky()}
         {this.renderMsg()}
-      </View>
+      </TouchableOpacity>}
       {this.props.children}
     </View>
   }

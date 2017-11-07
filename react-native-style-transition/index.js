@@ -11,14 +11,16 @@ export default class Transition extends Component {
 
   tweenStyle(style) {
     let newStyle = {}
+    const transition = this.props.transition || {}
+    const defaultTransition = transition.all || {
+      duration: this.props.duration,
+      easing: this.props.easing || Easing.inOut(Easing.ease),
+    }
     Object.entries(style).map(([key, value]) => {
       if (!this.values[key]) {
         this.values[key] = new TweenValue(value)
       }
-      this.values[key].setTarget(style[key], {
-        duration: this.props.duration,
-        easing: this.props.easing || Easing.inOut(Easing.ease),
-      })
+      this.values[key].setTarget(style[key], transition[key] || defaultTransition)
       newStyle[key] = this.values[key].val()
     })
     return newStyle
