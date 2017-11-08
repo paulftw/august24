@@ -15,7 +15,6 @@ import Contacts from 'react-native-contacts'
 import {
   centerVertical,
   floatRight,
-  BottomNav,
   Hero,
   HighlightRow,
   Icon,

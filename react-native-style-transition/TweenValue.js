@@ -19,7 +19,9 @@ export default class TweenValue {
 
     if (!duration
         || this.startValue === null || this.startValue === undefined
-        || target === null || target === undefined) {
+        || target === null || target === undefined
+        || target instanceof Object
+        || this.startValue instanceof Object) {
       this.setStart(target)
       return
     }

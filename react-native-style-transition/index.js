@@ -3,6 +3,18 @@ import { Animated, Easing, } from 'react-native'
 
 import TweenValue from './TweenValue'
 
+const valuesCache = {}
+
+function getCachedValues(objectId, compValues) {
+  if (!objectId) {
+    return compValues
+  }
+  if (valuesCache[objectId]) {
+    return valuesCache[objectId]
+  }
+  return valuesCache[objectId] = compValues
+}
+
 export default class Transition extends Component {
   constructor(props) {
     super(props)
@@ -31,6 +43,8 @@ export default class Transition extends Component {
   }
 
   render() {
+    this.values = getCachedValues(this.props.objectId, this.values)
+
     const { style } = this.props
     const Compo = this.props.component || Animated.View
     return <Compo {...this.props} style={this.tweenStyle(style)} />

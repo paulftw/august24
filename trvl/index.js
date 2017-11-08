@@ -249,23 +249,23 @@ export class Tab extends Component {
   render() {
     return <TouchableOpacity onPress={this.props.onPress}>
       <Transition
-        duration={300}
-        style={{
-          padding: smallStep,
-          borderColor: this.props.active ? colorActive : 'transparent',
-          borderRadius: 1000,
-          borderWidth: 1,
-          alignItems: 'center',
-          width: 80,
-        }}
-        >
-      <Transition component={Text}
-          duration={300}
+          duration={250}
           style={{
-            color: this.props.active ? colorActive : textColorNormal,
-          }}>
-        {this.props.title}
-      </Transition>
+            padding: smallStep,
+            borderColor: this.props.active ? colorActive : 'transparent',
+            borderRadius: 1000,
+            borderWidth: 1,
+            alignItems: 'center',
+            width: 80,
+          }}
+          >
+        <Transition component={Text}
+            duration={250}
+            style={{
+              color: this.props.active ? colorActive : textColorNormal,
+            }}>
+          {this.props.title}
+        </Transition>
       </Transition>
     </TouchableOpacity>
   }
@@ -403,22 +403,20 @@ BottomNav.Button = class BottomNavButton extends Component {
       }}>
         {this.props.icon}
 
-        <Text style={{
+        <Transition component={Text} duration={250} objectId={'text-' + this.props.objectId} style={{
             color: this.props.active ? textColorLoud : textColorNormal,
           }}>
           {this.props.label}
-        </Text>
+        </Transition>
 
-        {!this.props.active ? <View style={{height: 1.5}} /> :
-          <View style={{
-            backgroundColor: colorActive,
+        <Transition duration={250} objectId={'line-' + this.props.objectId} style={{
+            backgroundColor: this.props.active ? colorActive : 'transparent',
             height: 1.5,
             shadowOffset: { width: -1, height: -1 },
-            shadowColor: colorActive,
+            shadowColor: this.props.active ? colorActive : 'transparent',
             shadowOpacity: 0.375,
             width: '100%',
-          }}></View>
-        }
+          }}/>
       </TouchableOpacity>
   }
 }

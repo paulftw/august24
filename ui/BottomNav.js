@@ -27,7 +27,7 @@ export default class _BottomNav {
   render() {
     return <BottomNav>
       {this.pages.map((page, index) => (
-        <BottomNav.Button
+        <BottomNav.Button objectId={'bottomBtn-' + page.url}
           active={page.url === this.router.getRoute()}
           onPress={e => this.router.navigate(page.url)}
           icon={BottomNav.icon(page.icon, page.url === this.router.getRoute())}
