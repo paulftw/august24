@@ -32,6 +32,8 @@ const footerBG = '#1E2029'
 const footerTextColorInactive = '#78797E'
 const footerTextColorActive = textColorLoud
 
+const transitionDuration = 250
+
 const fontSize = {
   heroH1: 32,
   heroH2: 17,
@@ -249,7 +251,7 @@ export class Tab extends Component {
   render() {
     return <TouchableOpacity onPress={this.props.onPress}>
       <Transition
-          duration={250}
+          duration={transitionDuration}
           style={{
             padding: smallStep,
             borderColor: this.props.active ? colorActive : 'transparent',
@@ -260,7 +262,7 @@ export class Tab extends Component {
           }}
           >
         <Transition component={Text}
-            duration={250}
+            duration={transitionDuration}
             style={{
               color: this.props.active ? colorActive : textColorNormal,
             }}>
@@ -287,14 +289,14 @@ export class HighlightRow extends Component {
 
 export class Text extends Component {
   render() {
-    return <Animated.Text style={mergeStyle({
+    return <RNative.Text style={mergeStyle({
         color: '#fff6',
         fontSize: fontSize.normal,
         fontFamily: fontRegular,
         fontVariant: ['lining-nums'],
       }, this.props.style)}>
       {this.props.children}
-    </Animated.Text>
+    </RNative.Text>
   }
 }
 
@@ -403,13 +405,13 @@ BottomNav.Button = class BottomNavButton extends Component {
       }}>
         {this.props.icon}
 
-        <Transition component={Text} duration={250} objectId={'text-' + this.props.objectId} style={{
+        <Transition component={Text} duration={transitionDuration} objectId={'text-' + this.props.objectId} style={{
             color: this.props.active ? textColorLoud : textColorNormal,
           }}>
           {this.props.label}
         </Transition>
 
-        <Transition duration={250} objectId={'line-' + this.props.objectId} style={{
+        <Transition duration={transitionDuration} objectId={'line-' + this.props.objectId} style={{
             backgroundColor: this.props.active ? colorActive : 'transparent',
             height: 1.5,
             shadowOffset: { width: -1, height: -1 },
@@ -421,8 +423,15 @@ BottomNav.Button = class BottomNavButton extends Component {
   }
 }
 
-BottomNav.icon = function(name, active) {
-  return <Icon name={name} color={active ? textColorLoud : textColorNormal} size={20} />
+BottomNav.icon = function(name, active, objectId) {
+  return <Transition
+      duration={transitionDuration}
+      component={Icon}
+      name={name}
+      objectId={objectId}
+      style={{color: active ? textColorLoud : textColorNormal}}
+      size={20}
+  />
 }
 
 export class Button extends Component {

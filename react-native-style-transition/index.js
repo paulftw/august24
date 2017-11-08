@@ -19,6 +19,7 @@ export default class Transition extends Component {
   constructor(props) {
     super(props)
     this.values = {}
+    this.objectId = props.objectId
   }
 
   tweenStyle(style) {
@@ -28,7 +29,7 @@ export default class Transition extends Component {
       duration: this.props.duration,
       easing: this.props.easing || Easing.inOut(Easing.ease),
     }
-    Object.entries(style).map(([key, value]) => {
+    style && Object.entries(style).map(([key, value]) => {
       if (!this.values[key]) {
         this.values[key] = new TweenValue(value)
       }
@@ -43,10 +44,13 @@ export default class Transition extends Component {
   }
 
   render() {
+    if (this.objectId !== this.props.objectId) {
+      console.warn(`Transition's objectId has changed from "${this.objectId}" to "${this.props.objectId}" this will cause weird and unspecified behaviour!`)
+    }
     this.values = getCachedValues(this.props.objectId, this.values)
 
     const { style } = this.props
-    const Compo = this.props.component || Animated.View
+    const Compo = this.props.component ? Animated.createAnimatedComponent(this.props.component) : Animated.View
     return <Compo {...this.props} style={this.tweenStyle(style)} />
   }
 }

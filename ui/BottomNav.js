@@ -30,7 +30,7 @@ export default class _BottomNav {
         <BottomNav.Button objectId={'bottomBtn-' + page.url}
           active={page.url === this.router.getRoute()}
           onPress={e => this.router.navigate(page.url)}
-          icon={BottomNav.icon(page.icon, page.url === this.router.getRoute())}
+          icon={BottomNav.icon(page.icon, page.url === this.router.getRoute(), 'bottomIcon-' + page.url)}
           label={page.label}
           key={index}
         />
