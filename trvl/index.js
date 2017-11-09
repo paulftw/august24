@@ -328,6 +328,66 @@ export function centerVertical() {
   }
 }
 
+export class TopBar extends Component {
+  render() {
+    return <View style={{
+        backgroundColor: footerBG,
+        flexDirection: 'row',
+        height: 40,
+        marginBottom: 10,
+
+        marginLeft: -this.context.screenMargin,
+        marginRight: -this.context.screenMargin,
+
+        paddingTop: smallStep,
+        paddingLeft: this.context.screenMargin + 20,
+        paddingRight: this.context.screenMargin + 20,
+
+        top: 0,
+      }}>
+      <View style={{
+            position: 'absolute',
+            top: smallStep,
+            left: this.context.screenMargin,
+            width: 20,
+          }}>
+        {this.props.leftIcon}
+      </View>
+      <View style={{
+          alignItems: 'center',
+          backgroundColor: '#0000',
+          flex: 1,
+          justifyContent: 'flex-start',
+        }}>
+        {this.props.children}
+      </View>
+    </View>
+  }
+}
+TopBar.contextTypes = {
+  screenMargin: PropTypes.number.isRequired,
+}
+
+TopBar.icon = function(name, objectId) {
+  return <Icon
+      name={name}
+      objectId={objectId}
+      style={{color: textColorLoud}}
+      size={20}
+  />
+}
+
+class TopBarTitle extends Component {
+  render() {
+    return <Text style={{
+          color: textColorLoud,
+          fontSize: fontSize.H1,
+        }}>
+      {this.props.text}
+    </Text>
+  }
+}
+TopBar.Title = TopBarTitle
 
 export class Label extends Component {
   render() {

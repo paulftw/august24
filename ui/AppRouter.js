@@ -1,6 +1,7 @@
 import React from 'react'
 
 import BottomNav from './BottomNav'
+import Chat from './Chat'
 import Contacts from './Contacts'
 import Conversations from './Conversations'
 import LoadingScreen from './LoadingScreen'
@@ -18,6 +19,7 @@ export default function createRouter(rootComponent) {
       'Conversations': routeParams => <Conversations
           bottomNav={new BottomNav(router)}
           conversations={rootComponent.state.conversations || []}
+          openChat={chatId => router.navigate('Chat', {chatId, from: 'Conversations'})}
         />,
       'Contacts': routeParams => <Contacts
           bottomNav={new BottomNav(router)}
@@ -26,6 +28,8 @@ export default function createRouter(rootComponent) {
       'Settings': routeParams => <Settings bottomNav={new BottomNav(router)}
           onLogout={e => rootComponent.onLogout()}
         />,
+
+      'Chat': routeParams => <Chat chatId={routeParams.chatId} onBack={e => router.navigate(routeParams.from)}/>,
 
       'LoadingScreen': routeParams => <LoadingScreen />,
 

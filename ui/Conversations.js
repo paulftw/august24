@@ -53,7 +53,7 @@ export default class Conversations extends Component {
 
           {this.props.conversations.map((c, key) => {
             const unreadCount = c.messageCount - c.readCount
-            return <TouchableOpacity key={key}>
+            return <TouchableOpacity key={key} onPress={e => this.props.openChat(123)}>
               <Panel>
                 <Title>Чат</Title>
                 <Text>{moment(c.lastMessageTimestamp).locale('uk').fromNow()}</Text>
