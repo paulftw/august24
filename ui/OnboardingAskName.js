@@ -13,6 +13,12 @@ import {
 } from '../trvl'
 
 export default class OnboardingAskName extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      text: 'Назвітся',
+    };
+  }
 
   async onStartAuth(debug) {
     const result = debug ? await firebase.signInDebugUser() : await firebase.startAuth()
@@ -30,13 +36,15 @@ export default class OnboardingAskName extends Component {
           <Hero.Subtitle>Як Вас звати?</Hero.Subtitle>
         </Hero>
         <View style={{flex: 30}}>
-          <TextInput />
+          <TextInput
+            onChangeText={(text) => this.setState({text})}
+            value={this.state.text} />
         </View>
         <View style={{flex: 20}}>
           <TouchableOpacity
               onPress={e => this.onStartAuth()}
               onLongPress={e => this.onStartAuth(true)}>
-            <Button label='Зареєструватись' />
+            <Button label='Зберегти' />
           </TouchableOpacity>
         </View>
       </Screen>

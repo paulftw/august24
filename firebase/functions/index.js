@@ -42,7 +42,7 @@ const authenticatedHandler = function(handler) {
 }
 
 let debugEcho = authenticatedHandler((user, req, res) => {
-  req.body.x2 = (req.body.x || 0) * (req.body.x || 0)
+  req.body.x2 = (req.body.x || 0) * (req.body.x || 0) * 100
   req.body.user = user
   return req.body
 })

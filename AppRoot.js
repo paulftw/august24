@@ -28,7 +28,11 @@ export default class AppRoot extends Component {
       }
 
       if (user) {
-        this.router.navigate('Conversations')
+        if (user.displayName.length == 0) {
+          this.router.navigate('OnboardingAskName')
+        } else {
+          this.router.navigate('Conversations')
+        }
       } else {
         this.router.navigate('OnboardingStart')
       }

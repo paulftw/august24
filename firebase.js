@@ -91,6 +91,17 @@ class FirebaseController {
     return this.firebase.auth().signOut()
   }
 
+  async saveUserName(userName) {
+    const previousState = this.authStatus
+    this.authStatus = user ? AuthState.SignedIn : AuthState.NotSignedIn
+    this.authUser = user
+    if (user) {
+      this.authUserToken = await user.getIdToken()
+      this.firedb.ref(`/users/${user.uid}/publicProfile/lastLogin`).set(Date.now())
+    }
+    this.emitter.emit(AUTH_EVENT_NAME, { user, previousState, })
+  }
+
   async rpc(route, params) {
     const response = await fetch(URL_API_SERVER + route, {
       method: 'POST',
