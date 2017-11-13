@@ -2,8 +2,8 @@
   "rules": {
 
     "users": {
-      ".indexOn": ["phoneNumber", "lastActive"],
       "$uid": {
+        ".indexOn": ["phoneNumber", "lastActive"],
         "phoneNumber": {
           ".read": true,
           ".write": false
@@ -12,10 +12,46 @@
           ".read": true,
           ".write": "$uid === auth.uid"
         },
-        "installFlow": {
+        "serverData": {
           ".read": "$uid === auth.uid",
-          ".write": "$uid === auth.uid"
+          ".write": false
         }
+      }
+    },
+    "userContacts": {
+      "$uid": {
+        ".write": false,
+        ".read": "$uid === auth.uid"
+      }
+    },
+    "userRooms": {
+      "$uid": {
+        "$roomId": {
+          ".indexOn": ["lastMessageTimestamp"]
+        },
+        ".write": false,
+        ".read": "$uid === auth.uid"
+      }
+    },
+    "chatRooms": {
+      "$roomId": {
+        ".write": false,
+        ".read": false
+      }
+    },
+    "chatMembers": {
+      "$roomId": {
+        ".write": false,
+        ".read": false
+      }
+    },
+    "chatMessages": {
+      "$roomId": {
+        "$messageId": {
+          ".indexOn": ["timestamp"]
+        },
+        ".read": "root.child('chatMembers').child($roomId).child(auth.uid).exists()",
+        ".write": false
       }
     }
   }

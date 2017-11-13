@@ -30,14 +30,9 @@ import {
 } from '../trvl'
 
 export default class Conversations extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      foo: 'no foo yet',
-      user: 'anon',
-      contacts: [],
-    }
-  }
+  // constructor(props) {
+  //   super(props)
+  // }
 
   render() {
     return (
@@ -52,11 +47,16 @@ export default class Conversations extends Component {
           </SectionHeader>
 
           {this.props.conversations.map((c, key) => {
-            const unreadCount = c.messageCount - c.readCount
-            return <TouchableOpacity key={key} onPress={e => this.props.openChat(123)}>
+            const unreadCount = c.totalMessages - c.readMessages
+            return <TouchableOpacity key={key} onPress={e => this.props.openChat(c.roomId)}>
               <Panel>
-                <Title>Чат</Title>
-                <Text>{moment(c.lastMessageTimestamp).locale('uk').fromNow()}</Text>
+                <Title>{c.roomId}</Title>
+                <Text>
+                  {c.totalMessages
+                    ? moment(c.lastMessageTimestamp).locale('uk').fromNow()
+                    : null
+                  }
+                </Text>
                 {unreadCount
                   ? <Label style={{container: Object.assign({}, floatRight(), centerVertical())}}>
                     {unreadCount}

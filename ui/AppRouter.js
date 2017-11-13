@@ -24,12 +24,18 @@ export default function createRouter(rootComponent) {
       'Contacts': routeParams => <Contacts
           bottomNav={new BottomNav(router)}
           contacts={rootComponent.state.contacts || []}
+          openChat={chatId => router.navigate('Chat', {chatId, from: 'Contacts'})}
         />,
       'Settings': routeParams => <Settings bottomNav={new BottomNav(router)}
           onLogout={e => rootComponent.onLogout()}
         />,
 
-      'Chat': routeParams => <Chat chatId={routeParams.chatId} onBack={e => router.navigate(routeParams.from)}/>,
+      'Chat': routeParams => <Chat
+          chatId={routeParams.chatId}
+          myId={rootComponent.dataModel.user.uid}
+          onBack={e => router.navigate(routeParams.from)}
+          onMessages={(chatId, cb) => rootComponent.subToMessages(chatId, cb)}
+          />,
 
       'LoadingScreen': routeParams => <LoadingScreen />,
 

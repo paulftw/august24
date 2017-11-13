@@ -43,6 +43,7 @@ class FirebaseController {
   async onAuthStateChanged(user) {
     const previousState = this.authStatus
     this.authStatus = user ? AuthState.SignedIn : AuthState.NotSignedIn
+
     this.authUser = user
     if (user) {
       this.authUserToken = await user.getIdToken()
@@ -56,7 +57,8 @@ class FirebaseController {
   }
 
   getDataModel() {
-    return new DataModel(this.firedb)
+    // TODO this is a terrible hack - no smart cleanup when user logs out
+    return new DataModel(this.firedb, this.authUser)
   }
 
   async startAuth() {
@@ -102,6 +104,7 @@ class FirebaseController {
         'Content-Type': 'application/json',
       },
     })
+    // TODO when rpc fails this throws a JSON parse error, should fail gracefully
     return await response.json()
   }
 }

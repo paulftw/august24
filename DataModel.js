@@ -1,6 +1,38 @@
 export default class DataModel {
-  constructor(firebase) {
+  constructor(firebase, user) {
     this.firebase = firebase
+    this.user = user
+  }
+
+  onConversations(fn) {
+    if (!this.user) {
+      return
+    }
+    this.firebase.ref('/userRooms/' + this.user.uid)
+      .orderByChild('lastMessageTimestamp')
+      .on('value', snap => {
+        const rooms = []
+        snap.forEach(room => rooms.push(Object.assign(
+            {},
+            room.val(),
+            {roomId: room.key}
+        )))
+        rooms.reverse()
+        fn(rooms)
+      })
+  }
+
+  subToMessages(roomId, cb) {
+    this.firebase.ref('/chatMessages/' + roomId)
+      .orderByChild('timestamp')
+      .on('value', snap => {
+        const messages = []
+        snap.forEach(msg => messages.push(Object.assign(
+            {},
+            msg.val(),
+            {messageId: msg.key})))
+        cb(messages)
+      })
   }
 
   getContacts() {
@@ -8,31 +40,31 @@ export default class DataModel {
     return [
       {
         name: 'Боб Марлєй',
-        phonenumber: '+900123',
+        phoneNumber: '+900123',
         userId: null,
         screenName: null,
       },
       {
         name: 'Ігор Єрьомін',
-        phonenumber: '+380777',
+        phoneNumber: '+380777',
         userId: 'foobar',
         screenName: null,
       },
       {
         name: 'Степан Бандера',
-        phonenumber: '+380999',
+        phoneNumber: '+380999',
         userId: null,
         screenName: null,
       },
       {
         name: 'Павло Коржик',
-        phonenumber: '+380888',
+        phoneNumber: '+380888',
         userId: 'foo2',
         screenName: 'Павло',
       },
       {
         name: 'Остап Бендер',
-        phonenumber: '+380444',
+        phoneNumber: '+380444',
         userId: null,
         screenName: null,
       },

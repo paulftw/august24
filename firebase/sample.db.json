@@ -1,4 +1,29 @@
 
+
+users by id
+  publicProfile
+  server
+
+
+userContacts by id
+
+
+userChats by id
+
+
+chatMessages by chatId
+  chatId
+
+
+chatMembers by chatId
+  chatId
+
+
+chatMetadata by chatId
+  message count
+  last timestamp
+
+
 users /
   bob
     phone
@@ -35,7 +60,6 @@ groups /
   201
   202
 
-chats
 
 messagesByGroupId /
   100 /

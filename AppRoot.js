@@ -21,6 +21,11 @@ export default class AppRoot extends Component {
     return logoutResult
   }
 
+  subToMessages(roomId, cb) {
+    // TODO: unsubscribe when necessary somehow
+    this.dataModel.subToMessages(roomId, cb)
+  }
+
   componentDidMount() {
     this._ismounted = true
 
@@ -31,7 +36,16 @@ export default class AppRoot extends Component {
         return
       }
 
+      this.dataModel = firebase.getDataModel()
+
       if (user) {
+        // TODO: unsubscribe previous listener, if any
+        this.dataModel.onConversations(conversations => {
+          this.setState({
+            conversations,
+          })
+        })
+
         this.router.navigate('Conversations')
       } else {
         this.router.navigate('OnboardingStart')
