@@ -19,7 +19,7 @@ function messageText(messageId) {
   return {
     '1': 'Слава Україні!',
     '2': 'Героям Слава!',
-  }[messageId]
+  }[messageId] || 'Bad Message #' + messageId
 }
 
 class Keyboard extends Component {
@@ -180,7 +180,7 @@ export default class Chat extends Component {
           </TouchableOpacity>
         )}>
 
-          <TopBar.Title text={'Chat Id ' + this.props.chatId} />
+          <TopBar.Title text={this.props.chatId} />
         </TopBar>
 
         <ScrollView ref='messagesView' style={{
@@ -188,16 +188,16 @@ export default class Chat extends Component {
             }}>
           {this.state.chatHistory.map((msg, key) => (
             <View key={key} style={{
-              alignSelf: msg.my ? 'flex-end' : 'flex-start',
+              alignSelf: msg.senderId === this.props.myId ? 'flex-end' : 'flex-start',
               padding: 8,
-              borderColor: msg.my ? '#fff6' : '#12DFCA',
+              borderColor: msg.senderId === this.props.myId ? '#fff6' : '#12DFCA',
               borderWidth: 1,
               borderRadius: 8,
               margin: 4,
             }}>
               <Text style={{
-                color: msg.my ? '#fffb' : '#12DFCA',
-              }}>{messageText(msg.messageId)}</Text>
+                color: msg.senderId === this.props.myId ? '#fffb' : '#12DFCA',
+              }}>{messageText(msg.message.messageCode)}</Text>
             </View>
           ))}
         </ScrollView>

@@ -12,18 +12,20 @@ import Router from './Router'
 import Settings from './Settings'
 
 import { log } from '../debugtools'
+import firebase from '../firebase'
 
 export default function createRouter(rootComponent) {
   const router = new Router(rootComponent, {
     routes: {
       'Conversations': routeParams => <Conversations
           bottomNav={new BottomNav(router)}
-          conversations={rootComponent.state.conversations || []}
+          conversationsRef={firebase.firedb.ref('/userChats/' + firebase.authUser.uid)}
           openChat={chatId => router.navigate('Chat', {chatId, from: 'Conversations'})}
         />,
       'Contacts': routeParams => <Contacts
           bottomNav={new BottomNav(router)}
           contacts={rootComponent.state.contacts || []}
+          openChat={chatId => router.navigate('Chat', {chatId, from: 'Contacts'})}
         />,
       'Settings': routeParams => <Settings bottomNav={new BottomNav(router)}
           onLogout={e => rootComponent.onLogout()}

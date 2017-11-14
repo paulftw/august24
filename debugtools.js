@@ -7,14 +7,31 @@ import {
 
 import firebase from './firebase'
 
-const DEBUG = false
+const DEBUG = true
 // TODO: disable anonymous sign in in production
 
 export { DEBUG }
 
 export async function performDebugRpc() {
-  const resp = await firebase.rpc('debugEcho', {a: 300, x: 16, })
-  alert('echo Resp ' + JSON.stringify(resp))
+  // const resp = await firebase.rpc('debugEcho', {
+  //   members: ['e9TruDgoyXOohFNgt8GY7M0VclU2'],
+  //   isDirectChat: true,
+  //   x: 103,
+  // })
+  // log('debug resp ', resp)
+  // alert('deb resp ' + JSON.stringify(resp))
+
+
+  // +380935313429
+  const UID_PAUL = 'o5vH1n5RMQc0fBvgsDvuKZhtARe2'
+  // +380502654463
+  const UID_IGOR = 'e9TruDgoyXOohFNgt8GY7M0VclU2'
+
+  const resp = await firebase.rpc('createChat', {
+    members: [UID_PAUL],
+    isDirectChat: true,
+  })
+  log('createChat resp ', resp)
 }
 
 let debugSticky = {}

@@ -62,10 +62,10 @@ export default class Conversations extends Component {
             <SectionHeader.Text>{contacts.length} ПАРТИЗАН</SectionHeader.Text>
           </SectionHeader>
 
-          {contacts.map((c, key) => <TouchableOpacity key={key}>
+          {contacts.map((c, key) => <TouchableOpacity key={key} onPress={e => this.props.openChat(c.phoneNumber)}>
               <Panel>
                 <Title>{c.name}</Title>
-                <Text>{c.phonenumber}</Text>
+                <Text>{c.phoneNumber}</Text>
               </Panel>
             </TouchableOpacity>)
           }

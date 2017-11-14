@@ -1,0 +1,51 @@
+
+
+users
+  userId:
+    phoneNumber - read-only (initalized when user is first created)
+    publicProfile - writeable by the user
+      userName
+      lastLogin
+    serverData - read-only (cloud functions can write)
+
+
+userContacts
+  userId:
+    phoneNumber:
+      phoneNumber
+      contactsName
+      realName
+      userId
+      isRegistered
+
+chats
+  chatId:
+    createdOn
+    createdBy
+    totalMessages
+    lastMessageTimestamp
+    isDirectChat
+    directChatKey (indexed)
+
+userChats:
+  userId:
+    chatId:
+      lastOpenedTimestamp
+      lastMessageTimestamp
+      readMessages
+      totalMessages
+
+chatMembers:
+  chatId:
+    userId:
+      isAdmin
+      // TODO isSuperAdmin? or creator - cannot be deleted, can add other admins
+
+
+chatMessages
+  chatId:
+    messageId:
+      // TODO
+      timestamp
+      senderId
+      messageCode
