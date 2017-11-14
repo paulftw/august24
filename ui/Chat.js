@@ -14,6 +14,7 @@ import {
   Screen,
 } from '../trvl'
 
+import firebase from '../firebase'
 import Keyboard from './Keyboard'
 
 function messageText(messageId) {
@@ -32,15 +33,50 @@ export default class Chat extends Component {
     }
   }
 
-  onSend(messageId) {
-    this.setState({
-      chatHistory: [...this.state.chatHistory, {
-        message: { messageCode: messageId },
-        my: (this.state.chatHistory.length % 5 < 2),
-      }]
-    })
+  subscribe(messagesRef) {
+    this.unsubscribe()
 
-    setTimeout(() => this.refs.messagesView.scrollToEnd({animated: true}), 100)
+    this.messagesRef = messagesRef
+    this.listener = this.messagesRef.orderByChild('timestamp')
+      .on('value', snap => {
+        const messages = []
+        snap.forEach(msg => messages.push(Object.assign(
+            {},
+            msg.val(),
+            {messageId: msg.key}
+        )))
+        this.setState({ chatHistory: messages })
+        setTimeout(() => this.refs.messagesView.scrollToEnd({animated: true}), 100)
+      })
+  }
+
+  unsubscribe() {
+    if (this.listener) {
+      this.messagesRef.off('value', this.listener)
+      delete this.listener
+      delete this.messagesRef
+    }
+  }
+
+  componentWillMount() {
+    this.subscribe(this.props.messagesRef)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.subscribe(nextProps.messagesRef)
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe()
+  }
+
+  onSend(messageId) {
+    firebase.rpc('sendMessageToChat', {
+      chatId: this.props.chatId,
+      message: {
+        messageCode: messageId,
+      },
+    })
   }
 
   render() {

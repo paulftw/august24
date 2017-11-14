@@ -37,9 +37,11 @@ export default class Conversations extends Component {
     }
   }
 
-  componentWillMount() {
-    // TODO: unsubscribe / resubscribe when props are being changed by a parent component
-    this.listener = this.props.conversationsRef
+  subscribe(conversationsRef) {
+    this.unsubscribe()
+
+    this.conversationsRef = conversationsRef
+    this.listener = this.conversationsRef
       .orderByChild('lastMessageTimestamp')
       .on('value', snap => {
         const chats = []
@@ -53,9 +55,24 @@ export default class Conversations extends Component {
       })
   }
 
+  unsubscribe() {
+    if (this.listener) {
+      this.conversationsRef.off('value', this.listener)
+      delete this.listener
+      delete this.conversationsRef
+    }
+  }
+
+  componentWillMount() {
+    this.subscribe(this.props.conversationsRef)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.subscribe(nextProps.conversationsRef)
+  }
+
   componentWillUnmount() {
-    this.props.conversationsRef.off('value', this.listener)
-    delete this.listener
+    this.unsubscribe()
   }
 
   render() {

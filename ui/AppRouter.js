@@ -31,7 +31,12 @@ export default function createRouter(rootComponent) {
           onLogout={e => rootComponent.onLogout()}
         />,
 
-      'Chat': routeParams => <Chat chatId={routeParams.chatId} onBack={e => router.navigate(routeParams.from)}/>,
+      'Chat': routeParams => <Chat
+          chatId={routeParams.chatId}
+          messagesRef={firebase.firedb.ref('/chatMessages/' + routeParams.chatId)}
+          myId={rootComponent.state.user.uid}
+          onBack={e => router.navigate(routeParams.from)}
+        />,
 
       'LoadingScreen': routeParams => <LoadingScreen />,
 

@@ -31,6 +31,7 @@ export default class AppRoot extends Component {
       }
 
       // HACK: Ensures AppRoot is re-rendered on any auth change
+      // HACK: Also used by AppRouter to provide chat with self uid
       this.setState({user})
 
       if (user) {
