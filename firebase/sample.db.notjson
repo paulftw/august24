@@ -48,4 +48,5 @@ chatMessages
       // TODO
       timestamp
       senderId
-      messageCode
+      message: // In case we want to support different types of messages, etc.
+        messageCode // 1 - Slava Ukraini, 2 - Geroyam Slava
