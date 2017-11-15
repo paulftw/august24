@@ -29,7 +29,7 @@ export default class AppRoot extends Component {
 
       if (user) {
         firebase.userNameExists().then(userNameExists => {
-          if (userNameExists) {
+          if (!userNameExists) {
             this.router.navigate('OnboardingAskName')
           } else {
             this.router.navigate('Conversations')
