@@ -28,11 +28,13 @@ export default class AppRoot extends Component {
       }
 
       if (user) {
-        if (user.displayName.length == 0) {
-          this.router.navigate('OnboardingAskName')
-        } else {
-          this.router.navigate('Conversations')
-        }
+        firebase.userNameExists().then(userNameExists => {
+          if (userNameExists) {
+            this.router.navigate('OnboardingAskName')
+          } else {
+            this.router.navigate('Conversations')
+          }
+        })
       } else {
         this.router.navigate('OnboardingStart')
       }

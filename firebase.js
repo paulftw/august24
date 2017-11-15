@@ -91,15 +91,18 @@ class FirebaseController {
     return this.firebase.auth().signOut()
   }
 
+  async userNameExists() {
+    userId = this.firebase.auth().currentUser.uid
+    publicProfile = await this.firebase.database().ref('/users/' + userId + '/publicProfile').once('value')
+    return publicProfile.val() && publicProfile.val().userName ? true : false
+  }
+
   async saveUserName(userName) {
-    const previousState = this.authStatus
-    this.authStatus = user ? AuthState.SignedIn : AuthState.NotSignedIn
-    this.authUser = user
+    user = await this.firebase.auth().getCurrentUser()
     if (user) {
       this.authUserToken = await user.getIdToken()
-      this.firedb.ref(`/users/${user.uid}/publicProfile/lastLogin`).set(Date.now())
+      this.firedb.ref(`/users/${user.uid}/publicProfile/userName`).set(userName)
     }
-    this.emitter.emit(AUTH_EVENT_NAME, { user, previousState, })
   }
 
   async rpc(route, params) {
