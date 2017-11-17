@@ -9,7 +9,7 @@
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
-	<string>org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)</string>
+	<string>com.scifiware.apps.August24</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -25,7 +25,7 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.916130872955-djs1uqqvib7nfo01bblb0dit7kktbtsa</string>
+				<string>com.googleusercontent.apps.916130872955-4f39km5jrkhhstu9qcpk5qg3en85ek2j</string>
 				<string>fb279904149141812</string>
 			</array>
 		</dict>
@@ -38,8 +38,6 @@
 	<string>279904149141812</string>
 	<key>FacebookDisplayName</key>
 	<string>Слава Україні</string>
-	<key>HuyHuyCodePushDeploymentKey</key>
-	<string>f96460c2-c3a4-4a87-9622-d1843662f289</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>fbapi</string>

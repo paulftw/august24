@@ -1182,8 +1182,8 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-August24/Pods-August24-resources.sh",
-				"$PODS_CONFIGURATION_BUILD_DIR/FirebaseUI/FirebaseAuthUI.bundle",
-				"$PODS_CONFIGURATION_BUILD_DIR/FirebaseUI/FirebasePhoneAuthUI.bundle",
+				$PODS_CONFIGURATION_BUILD_DIR/FirebaseUI/FirebaseAuthUI.bundle,
+				$PODS_CONFIGURATION_BUILD_DIR/FirebaseUI/FirebasePhoneAuthUI.bundle,
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -1325,10 +1325,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.scifiware.apps.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = August24;
-				PROVISIONING_PROFILE = "6739701f-7ab9-4e59-b701-7904831f23f0";
-				PROVISIONING_PROFILE_SPECIFIER = "Firebase August24 Dev Profile";
+				PROVISIONING_PROFILE_SPECIFIER = "August24 Dev Profile 1";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1356,10 +1355,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.scifiware.apps.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = August24;
-				PROVISIONING_PROFILE = "6739701f-7ab9-4e59-b701-7904831f23f0";
-				PROVISIONING_PROFILE_SPECIFIER = "Firebase August24 Dev Profile";
+				PROVISIONING_PROFILE_SPECIFIER = "August24 Dev Profile 1";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
