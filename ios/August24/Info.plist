@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>August24</string>
+	<string>Слава Україні</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -26,25 +26,11 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>com.googleusercontent.apps.916130872955-4f39km5jrkhhstu9qcpk5qg3en85ek2j</string>
-				<string>fb279904149141812</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
-	<key>CodePushDeploymentKey</key>
-	<string>YYUPcB__PIWMJGIqspd3pdwlXcWt405a48b8-c9d8-408f-a243-a1b8a6ab4354</string>
-	<key>FacebookAppID</key>
-	<string>279904149141812</string>
-	<key>FacebookDisplayName</key>
-	<string>Слава Україні</string>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>fbapi</string>
-		<string>fb-messenger-api</string>
-		<string>fbauth2</string>
-		<string>fbshareextension</string>
-	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -81,6 +67,7 @@
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>
+		<string>fetch</string>
 		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>

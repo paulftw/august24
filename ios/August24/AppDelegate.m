@@ -8,8 +8,8 @@
  */
 
 #import "AppDelegate.h"
-//#import <CodePush/CodePush.h>
 #import "RNFirebaseMessaging.h"
+@import FirebaseAuthUI;
 
 #import <Firebase.h>
 #import <React/RCTBundleURLProvider.h>
@@ -27,7 +27,7 @@
 
   NSURL *jsCodeLocation;
 //  [[RCTBundleURLProvider sharedSettings] setJsLocation: @"192.168.2.229"];
-  [[RCTBundleURLProvider sharedSettings] setJsLocation: nil];
+//  [[RCTBundleURLProvider sharedSettings] setJsLocation: nil];
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
 //  RCTLogInfo(@"jsCodeLocation: %@", jsCodeLocation);
 
@@ -56,6 +56,11 @@
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(nonnull NSDictionary *)userInfo
 fetchCompletionHandler:(nonnull void (^)(UIBackgroundFetchResult))completionHandler{
   [RNFirebaseMessaging didReceiveRemoteNotification:userInfo fetchCompletionHandler:completionHandler];
+}
+
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary *)options {
+  NSString *sourceApplication = options[UIApplicationOpenURLOptionsSourceApplicationKey];
+  return [[FUIAuth defaultAuthUI] handleOpenURL:url sourceApplication:sourceApplication];
 }
 
 @end

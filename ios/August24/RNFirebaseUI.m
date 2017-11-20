@@ -130,7 +130,11 @@ NSDictionary *fuiErrorStrings = nil;
 
     NSString *message = [fuiErrorStrings objectForKey:@(error.code)];
     if (!message) {
-      message = [NSString stringWithFormat:@"FUI-Unknown Error [.code=%d]", error.code];
+      if (error) {
+        message = [NSString stringWithFormat:@"FUI-Unknown Error [.code=%ld]", (long) error.code];
+      } else {
+        message = @"FUI-Unknown Error [error is null]";
+      }
     }
     reject(message, message, [NSError
         errorWithDomain:FUIAuthErrorDomain
