@@ -49,9 +49,25 @@ let debugEcho = authenticatedHandler((user, req, res) => {
 
 export { debugEcho }
 
+function updateRef(refPath, data) {
+  return admin.database().ref(refPath).update(data)
+}
+
+function getRef(refPath) {
+  return admin.database().ref(refPath)
+}
+
+async function readOnce(refOrPath) {
+  if (typeof refOrPath === 'string') {
+    refOrPath = getRef(refOrPath)
+  }
+  const snap = await refOrPath.once('value')
+  return snap.val()
+}
+
 let writePhoneNumberOnCreate = functions.auth.user().onCreate(event => {
   let user = event.data
-  admin.database().ref(`/users/${user.uid}`).update({
+  updateRef(`/users/${user.uid}`, {
     phoneNumber: user.phoneNumber,
   })
 })
@@ -59,14 +75,15 @@ let writePhoneNumberOnCreate = functions.auth.user().onCreate(event => {
 export { writePhoneNumberOnCreate }
 
 async function findUserByPhone(phoneNumber) {
-  const userRef = admin.database().ref(`/users/`)
+  const userRef = getRef('/users/')
       .orderByChild('phoneNumber')
       .equalTo(phoneNumber)
-  const userData = (await userRef.once('value')).val()
+  const userData = await readOnce(userRef)
   return userData ? Object.entries(userData)[0] : null
 }
 
 let uploadContacts = authenticatedHandler((user, req, res) => {
+  // TODO check request schema
   const contacts = req.body.contacts || []
 
   const savedContacts = contacts.map(async function(contact) {
@@ -79,7 +96,7 @@ let uploadContacts = authenticatedHandler((user, req, res) => {
       isRegistered: !!registeredUser,
       userId: registeredUser ? registeredUser[0] : null,
     }
-    admin.database().ref(`/users/${user.uid}/contacts/${contact.phoneNumber}`).set(contactData)
+    await updateRef(`/userContacts/${user.uid}/${contact.phoneNumber}`, contactData)
     return contactData
   })
 
@@ -97,3 +114,85 @@ curl -X POST -H "Content-Type:application/json" \
   ]}' \
 https://us-central1-sizzling-torch-7444.cloudfunctions.net/uploadContacts
 */
+
+function addUserToChat(chatId, userId, isAdmin, chatState) {
+  updateRef(`chatMembers/${chatId}/${userId}`, {
+    isAdmin,
+  })
+  updateRef(`userChats/${userId}/${chatId}`, {
+    lastOpenedTimestamp: -1,
+    readMessages: 0,
+    totalMessages: chatState.totalMessages,
+    lastMessageTimestamp: chatState.lastMessageTimestamp,
+  })
+  return userId
+}
+
+async function allUserIdsValid(userIds) {
+  let usersExist = userIds.map(uid => readOnce(`/users/${uid}`).then(userProfile => !!userProfile))
+  // Reduce below does logical *and* of all user profiles - ( u1 && u2 && .. && u[n] )
+  return (await Promise.all(usersExist)).reduce((u, sum) => u && sum, true)
+}
+
+async function findDirectChatForKey(directChatKey) {
+  const chatRef = getRef('/chats/')
+      .orderByChild('directChatKey')
+      .equalTo(directChatKey)
+  const chatData = await readOnce(chatRef)
+  return chatData ? Object.keys(chatData)[0] : null
+}
+
+let createChat = authenticatedHandler(async function(user, req, res) {
+  // TODO check input data schema
+  const chatProps = {
+    createdOn: Date.now(),
+    createdBy: user.uid,
+    totalMessages: 0,
+    lastMessageTimestamp: 0,
+  }
+  let directChatKey = undefined
+  if (req.body.isDirectChat) {
+    if (req.body.members.length !== 1) {
+      throw new Error('Direct chat can only have 1 extra member but got ' + JSON.stringify(req.body.members))
+    }
+    const alice = user.uid
+    const bob = req.body.members[0]
+    directChatKey = alice < bob ? `${alice}-${bob}` : `${bob}-${alice}`
+
+    let existingChatId = await findDirectChatForKey(directChatKey)
+    if (existingChatId) {
+      return { chatId: existingChatId }
+    }
+  } else {
+    //  !req.body.isDirectChat === false
+    throw new Error('Only direct chats are supported')
+  }
+
+  const chatMembers = [...new Set([user.uid, ...req.body.members])]
+
+  if (!await allUserIdsValid(chatMembers)) {
+    throw new Error('WTF you passed a bad userId in ' + JSON.stringify(req.body.members))
+  }
+
+  // INVARIANT: all input data has been validated beyond this point!
+
+  if (req.body.isDirectChat === true) {
+      chatProps.isDirectChat = true
+      chatProps.directChatKey = directChatKey
+  }
+  // TODO wrap all writes into a single database transaction
+  const newChat = await getRef('/chats/').push(chatProps)
+
+  const chatAdds = chatMembers.map(uid => addUserToChat(
+      newChat.key,
+      uid,
+      user.uid === uid,
+      chatProps))
+  const addResults = await Promise.all(chatAdds)
+  return {
+    chatId: newChat.key,
+    addResults,
+  }
+})
+
+export { createChat }

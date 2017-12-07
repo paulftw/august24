@@ -11,7 +11,6 @@ export default class AppRoot extends Component {
     this.router = appRouter(this)
 
     this.dataModel = firebase.getDataModel()
-    this.state.conversations = this.dataModel.getConversations()
     this.state.contacts = this.dataModel.getContacts()
   }
 
@@ -30,6 +29,9 @@ export default class AppRoot extends Component {
         // Ignore all transitions after the initial load.
         return
       }
+
+      // HACK: Ensures AppRoot is re-rendered on any auth change
+      this.setState({user})
 
       if (user) {
         this.router.navigate('Conversations')

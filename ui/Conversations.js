@@ -33,10 +33,29 @@ export default class Conversations extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      foo: 'no foo yet',
-      user: 'anon',
-      contacts: [],
+      chats: [],
     }
+  }
+
+  componentWillMount() {
+    // TODO: unsubscribe / resubscribe when props are being changed by a parent component
+    this.listener = this.props.conversationsRef
+      .orderByChild('lastMessageTimestamp')
+      .on('value', snap => {
+        const chats = []
+        snap.forEach(chat => chats.push(Object.assign(
+            {},
+            chat.val(),
+            {chatId: chat.key}
+        )))
+        chats.reverse()
+        this.setState({ chats })
+      })
+  }
+
+  componentWillUnmount() {
+    this.props.conversationsRef.off('value', this.listener)
+    delete this.listener
   }
 
   render() {
@@ -48,15 +67,20 @@ export default class Conversations extends Component {
 
         <ScrollView>
           <SectionHeader>
-            <SectionHeader.Text>{this.props.conversations.length} РОЗМОВ</SectionHeader.Text>
+            <SectionHeader.Text>{this.state.chats.length} РОЗМОВ</SectionHeader.Text>
           </SectionHeader>
 
-          {this.props.conversations.map((c, key) => {
-            const unreadCount = c.messageCount - c.readCount
-            return <TouchableOpacity key={key} onPress={e => this.props.openChat(123)}>
+          {this.state.chats.map((c, key) => {
+            const unreadCount = c.totalMessages - c.readMessages
+            return <TouchableOpacity key={key} onPress={e => this.props.openChat(c.chatId)}>
               <Panel>
-                <Title>Чат</Title>
-                <Text>{moment(c.lastMessageTimestamp).locale('uk').fromNow()}</Text>
+                <Title>{c.chatId}</Title>
+                <Text>
+                  {c.totalMessages
+                    ? moment(c.lastMessageTimestamp).locale('uk').fromNow()
+                    : null
+                  }
+                </Text>
                 {unreadCount
                   ? <Label style={{container: Object.assign({}, floatRight(), centerVertical())}}>
                     {unreadCount}

@@ -2,7 +2,7 @@
   "rules": {
 
     "users": {
-      ".indexOn": ["phoneNumber", "lastActive"],
+      ".indexOn": ["phoneNumber"],
       "$uid": {
         "phoneNumber": {
           ".read": true,
@@ -12,10 +12,47 @@
           ".read": true,
           ".write": "$uid === auth.uid"
         },
-        "installFlow": {
+        "serverData": {
           ".read": "$uid === auth.uid",
-          ".write": "$uid === auth.uid"
+          ".write": false
         }
+      }
+    },
+    "userContacts": {
+      "$uid": {
+        ".write": false,
+        ".read": "$uid === auth.uid"
+      }
+    },
+    "userChats": {
+      "$uid": {
+        ".indexOn": ["lastMessageTimestamp"],
+        "$chatId": {
+        },
+        ".write": false,
+        ".read": "$uid === auth.uid"
+      }
+    },
+    "chats": {
+      ".indexOn": ["directChatKey"],
+      "$chatId": {
+        ".write": false,
+        ".read": false
+      }
+    },
+    "chatMembers": {
+      "$chatId": {
+        ".write": false,
+        ".read": "data.child(auth.uid).exists()"
+      }
+    },
+    "chatMessages": {
+      "$chatId": {
+        ".indexOn": ["timestamp"],
+        "$messageId": {
+        },
+        ".read": "root.child('chatMembers').child($chatId).child(auth.uid).exists()",
+        ".write": false
       }
     }
   }

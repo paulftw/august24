@@ -102,6 +102,7 @@ class FirebaseController {
         'Content-Type': 'application/json',
       },
     })
+    // TODO when rpc fails this throws a JSON parse error, should fail gracefully
     return await response.json()
   }
 }
