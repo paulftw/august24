@@ -7,7 +7,7 @@ import {
 
 import firebase from './firebase'
 
-const DEBUG = false
+const DEBUG = true
 // TODO: disable anonymous sign in in production
 
 export { DEBUG }
