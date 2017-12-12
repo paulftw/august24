@@ -13,13 +13,9 @@ import {
 } from '../trvl'
 
 export default class OnboardingAskName extends Component {
-
-  async onStartAuth(debug) {
-    const result = debug ? await firebase.signInDebugUser() : await firebase.startAuth()
-    if (result) {
-      this.props.onSuccess()
-    }
-    return result
+  async onSaveName() {
+    await firebase.saveUserName(this.state.userName)
+    this.props.onSuccess()
   }
 
   render() {
@@ -30,13 +26,17 @@ export default class OnboardingAskName extends Component {
           <Hero.Subtitle>Як Вас звати?</Hero.Subtitle>
         </Hero>
         <View style={{flex: 30}}>
-          <TextInput />
+          <TextInput
+            underlineColorAndroid={'white'}
+            style={{color: 'white'}}
+            onChangeText={(userName) => this.setState({userName})}
+            placeholder={'Назвіться'}
+            placeholderTextColor={'white'}
+            value={this.state.userName} />
         </View>
         <View style={{flex: 20}}>
-          <TouchableOpacity
-              onPress={e => this.onStartAuth()}
-              onLongPress={e => this.onStartAuth(true)}>
-            <Button label='Зареєструватись' />
+          <TouchableOpacity onPress={e => this.onSaveName()}>
+            <Button label='Далі' />
           </TouchableOpacity>
         </View>
       </Screen>

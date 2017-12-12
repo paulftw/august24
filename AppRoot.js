@@ -22,8 +22,9 @@ export default class AppRoot extends Component {
 
   componentDidMount() {
     this._ismounted = true
+    let self = this
 
-    firebase.addAuthListener(({ user, previousState, }) => {
+    firebase.addAuthListener(async function({ user, previousState, }) {
       // Firebase may or may not start before the root component is mounted.
       if (previousState !== firebase.AuthStates.Unknown) {
         // Ignore all transitions after the initial load.
@@ -34,9 +35,14 @@ export default class AppRoot extends Component {
       this.setState({user})
 
       if (user) {
-        this.router.navigate('Conversations')
+        const userNameExists = await firebase.userNameExists()
+        if (!userNameExists) {
+          self.router.navigate('OnboardingAskName')
+        } else {
+          self.router.navigate('Conversations')
+        }
       } else {
-        this.router.navigate('OnboardingStart')
+        self.router.navigate('OnboardingStart')
       }
     })
   }

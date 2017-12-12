@@ -93,6 +93,20 @@ class FirebaseController {
     return this.firebase.auth().signOut()
   }
 
+  async userNameExists() {
+    userId = this.firebase.auth().currentUser.uid
+    publicProfile = await this.firebase.database().ref(`/users/${userId}/publicProfile`).once('value')
+    return publicProfile.val() && publicProfile.val().userName ? true : false
+  }
+
+  async saveUserName(userName) {
+    user = await this.firebase.auth().getCurrentUser()
+    if (user) {
+      this.authUserToken = await user.getIdToken()
+      this.firedb.ref(`/users/${user.uid}/publicProfile/userName`).set(userName)
+    }
+  }
+
   async rpc(route, params) {
     const response = await fetch(URL_API_SERVER + route, {
       method: 'POST',
