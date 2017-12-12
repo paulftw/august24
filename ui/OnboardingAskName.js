@@ -14,8 +14,8 @@ import {
 
 export default class OnboardingAskName extends Component {
   constructor(props) {
-    super(props);
-    this.state = {};
+    super(props)
+    this.state = {}
   }
 
   async onSaveName() {
@@ -41,7 +41,7 @@ export default class OnboardingAskName extends Component {
         </View>
         <View style={{flex: 20}}>
           <TouchableOpacity onPress={e => this.onSaveName()}>
-            <Button label='Зберегти' />
+            <Button label='Далі' />
           </TouchableOpacity>
         </View>
       </Screen>
