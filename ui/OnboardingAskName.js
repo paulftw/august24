@@ -13,11 +13,6 @@ import {
 } from '../trvl'
 
 export default class OnboardingAskName extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {}
-  }
-
   async onSaveName() {
     await firebase.saveUserName(this.state.userName)
     this.props.onSuccess()
