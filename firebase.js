@@ -93,7 +93,7 @@ class FirebaseController {
 
   async userNameExists() {
     userId = this.firebase.auth().currentUser.uid
-    publicProfile = await this.firebase.database().ref('/users/' + userId + '/publicProfile').once('value')
+    publicProfile = await this.firebase.database().ref(`/users/${userId}/publicProfile`).once('value')
     return publicProfile.val() && publicProfile.val().userName ? true : false
   }
 

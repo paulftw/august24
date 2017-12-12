@@ -15,9 +15,7 @@ import {
 export default class OnboardingAskName extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      userName: 'Назвітся',
-    };
+    this.state = {};
   }
 
   async onSaveName() {
@@ -37,6 +35,8 @@ export default class OnboardingAskName extends Component {
             underlineColorAndroid={'white'}
             style={{color: 'white'}}
             onChangeText={(userName) => this.setState({userName})}
+            placeholder={'Назвіться'}
+            placeholderTextColor={'white'}
             value={this.state.userName} />
         </View>
         <View style={{flex: 20}}>
