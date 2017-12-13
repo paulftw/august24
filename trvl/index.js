@@ -464,6 +464,7 @@ BottomNav.Button = class BottomNavButton extends Component {
         paddingTop: 11,
       }}>
         {this.props.icon}
+        {this.props.badge}
 
         <Transition component={Text} duration={transitionDuration} objectId={'text-' + this.props.objectId} style={{
             color: this.props.active ? textColorLoud : textColorNormal,
@@ -492,6 +493,26 @@ BottomNav.icon = function(name, active, objectId) {
       style={{color: active ? textColorLoud : textColorNormal}}
       size={20}
   />
+}
+
+BottomNav.badge = function(active, objectId) {
+  return <Transition
+      duration={transitionDuration}
+      objectId={objectId}
+      style={{
+        position: 'absolute',
+        right: '50%',
+        marginRight: -12,
+        top: 10,
+        height: 12,
+        width: 12,
+        borderWidth: 2,
+        borderColor: footerBG,
+        backgroundColor: colorActive,
+        opacity: active ? 1 : 0.5,
+        borderRadius: 6,
+      }}
+    />
 }
 
 export class Button extends Component {

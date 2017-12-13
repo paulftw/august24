@@ -26,15 +26,17 @@ export default class _BottomNav {
 
   render() {
     return <BottomNav>
-      {this.pages.map((page, index) => (
-        <BottomNav.Button objectId={'bottomBtn-' + page.url}
-          active={page.url === this.router.getRoute()}
-          onPress={e => this.router.navigate(page.url)}
-          icon={BottomNav.icon(page.icon, page.url === this.router.getRoute(), 'bottomIcon-' + page.url)}
-          label={page.label}
-          key={index}
-        />
-      ))}
+      {this.pages.map((page, index) => {
+        const active = page.url === this.router.getRoute()
+        return <BottomNav.Button objectId={'bottomBtn-' + page.url}
+            active={active}
+            onPress={e => this.router.navigate(page.url)}
+            icon={BottomNav.icon(page.icon, active, 'bottomIcon-' + page.url)}
+            label={page.label}
+            badge={page.badge ? BottomNav.badge(active, 'bottomBadge-' + page.url) : null}
+            key={index}
+          />
+      })}
     </BottomNav>
   }
 }
