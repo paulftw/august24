@@ -484,6 +484,10 @@ BottomNav.Button = class BottomNavButton extends Component {
   }
 }
 
+const ICON_SIZE = 24
+const BADGE_SIZE_WITH_TEXT = 20
+const BADGE_SIZE_EMPTY = 14
+
 BottomNav.icon = function(name, active, objectId) {
   return <Transition
       duration={transitionDuration}
@@ -491,28 +495,40 @@ BottomNav.icon = function(name, active, objectId) {
       name={name}
       objectId={objectId}
       style={{color: active ? textColorLoud : textColorNormal}}
-      size={20}
+      size={ICON_SIZE}
   />
 }
 
-BottomNav.badge = function(active, objectId) {
+BottomNav.badge = function({ active, label, objectId, }) {
+  const BADGE_SIZE = label ? BADGE_SIZE_WITH_TEXT : BADGE_SIZE_EMPTY
   return <Transition
       duration={transitionDuration}
       objectId={objectId}
       style={{
+        alignItems: 'center',
         position: 'absolute',
         right: '50%',
-        marginRight: -12,
+        marginRight: - 1.1 * BADGE_SIZE,
         top: 10,
-        height: 12,
-        width: 12,
+        height: BADGE_SIZE,
+        width: BADGE_SIZE,
         borderWidth: 2,
         borderColor: footerBG,
         backgroundColor: colorActive,
         opacity: active ? 1 : 0.5,
-        borderRadius: 6,
+        overflow: 'hidden',
+        borderRadius: BADGE_SIZE / 2,
       }}
-    />
+    >
+      {!label ? null : <Text style={{
+          fontSize: BADGE_SIZE - 6,
+          lineHeight: BADGE_SIZE - 4,
+          fontWeight: 'bold',
+          textAlign: 'center',
+          color: 1 + active ? textColorLoud : footerBG,
+        }}>{label}</Text>
+      }
+    </Transition>
 }
 
 export class Button extends Component {

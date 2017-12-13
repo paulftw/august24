@@ -33,7 +33,7 @@ export default class _BottomNav {
             onPress={e => this.router.navigate(page.url)}
             icon={BottomNav.icon(page.icon, active, 'bottomIcon-' + page.url)}
             label={page.label}
-            badge={page.badge ? BottomNav.badge(active, 'bottomBadge-' + page.url) : null}
+            badge={page.badge ? BottomNav.badge({active, label: page.badgeLabel, objectId: 'bottomBadge-' + page.url, }) : null}
             key={index}
           />
       })}
