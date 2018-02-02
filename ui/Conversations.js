@@ -13,8 +13,6 @@ import {
   View,
 } from 'react-native'
 
-import Contacts from 'react-native-contacts'
-
 import {
   centerVertical,
   floatRight,

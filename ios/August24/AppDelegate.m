@@ -27,7 +27,7 @@
 
   NSURL *jsCodeLocation;
 //  [[RCTBundleURLProvider sharedSettings] setJsLocation: @"169.254.54.117"];
-  [[RCTBundleURLProvider sharedSettings] setJsLocation: nil];
+//  [[RCTBundleURLProvider sharedSettings] setJsLocation: nil];
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
   RCTLogInfo(@"jsCodeLocation: %@", jsCodeLocation);
 

@@ -1,16 +1,10 @@
 import React, { Component } from 'react'
 import {
-  Dimensions,
   Image,
-  ProgressViewIOS,
   ScrollView,
-  StatusBar,
-  StyleSheet,
   TouchableOpacity,
   View,
 } from 'react-native'
-
-import Contacts from 'react-native-contacts'
 
 import {
   centerVertical,
@@ -30,7 +24,7 @@ import {
 
 import firebase from '../firebase'
 
-export default class Conversations extends Component {
+export default class Contacts extends Component {
   constructor(props) {
     super(props)
 
