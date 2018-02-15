@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { Linking } from 'react-native'
 import Contacts from 'react-native-contacts'
 
+import firebase from '../firebase'
+
 import Enum from '../Enum'
 import {
   Button,
@@ -67,9 +69,36 @@ export default class OnboardingAllowContacts extends Component {
   }
 
   processContacts(contacts) {
-    alert(`Found ${contacts.length} contacts. Let's move on`)
-    // TODO: actually process
+    // alert(`Found ${contacts.length} contacts. Let's move on`)
     // TODO: record to cloud the fact we had contacts at one point
+    let allContactRecords = []
+    contacts.forEach(contact => {
+      const fullNameArray = contact.middleName
+          ? [contact.givenName, contact.middleName, contact.familyName]
+          : [contact.givenName, contact.familyName]
+      const fullName = fullNameArray.join(' ')
+      const contactsForRecord = contact.phoneNumbers.map(numberRecord => ({
+        name: fullName,
+        phoneNumber: numberRecord.number,
+      }))
+      allContactRecords.push(...contactsForRecord)
+    })
+    const BATCH = 256
+    const rpcs = []
+    for (var i = 0; i < allContactRecords.length; i += BATCH) {
+      rpcs.push(firebase.rpc('uploadContacts', {
+        contacts: allContactRecords.slice(i, i + BATCH),
+      }))
+    }
+    Promise.all(rpcs).then(res => alert(`Залито ${allContactRecords.length} номерів в ${res.length} порцій`))
+
+    firebase.rpc('uploadContacts', {
+      contacts: [{
+        name: 'Godfather',
+        phoneNumber: '+380935313429',
+      }],
+    })
+
     this.props.onSuccess()
   }
 

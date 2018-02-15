@@ -6,7 +6,8 @@
     "babel-runtime": "^6.25.0",
     "cors": "^2.8.4",
     "firebase-admin": "~4.2.1",
-    "firebase-functions": "^0.5.7"
+    "firebase-functions": "^0.5.7",
+    "libphonenumber-js": "^1.0.24"
   },
   "private": true,
   "scripts": {

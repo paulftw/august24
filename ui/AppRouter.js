@@ -30,6 +30,8 @@ export default function createRouter(rootComponent) {
         />,
       'Settings': routeParams => <Settings bottomNav={new BottomNav(router)}
           onLogout={e => rootComponent.onLogout()}
+          // TODO: onOpenAllowContacts is used for debug only
+          onOpenAllowContacts={e => router.navigate('OnboardingAllowContacts')}
         />,
 
       'Chat': routeParams => <Chat chatId={routeParams.chatId} onBack={e => router.navigate(routeParams.from)}/>,

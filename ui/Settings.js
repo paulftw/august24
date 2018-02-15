@@ -64,6 +64,13 @@ export default class Settings extends Component {
                   >
                 <Button label='Debug' />
               </TouchableOpacity>
+
+              <TouchableOpacity
+                  onPress={e => this.props.onOpenAllowContacts()}
+                  >
+                <Button label='Debug Onboarding' />
+              </TouchableOpacity>
+
               <Text>user: {this.state.user ? Debug.jsonShort(this.state.user.toJSON()) : 'null?'}{'\n'}token: {`${(firebase.authUserToken || '').substring(0, 32)}...`}</Text>
             </View>
           }

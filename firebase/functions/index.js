@@ -1,5 +1,6 @@
 import * as admin from 'firebase-admin'
 import * as functions from 'firebase-functions'
+import { isValidNumber, format, parse } from 'libphonenumber-js'
 
 admin.initializeApp(functions.config().firebase)
 const cors = require('cors')({origin: true})
@@ -82,16 +83,39 @@ async function findUserByPhone(phoneNumber) {
   return userData ? Object.entries(userData)[0] : null
 }
 
+function cleanPhoneNumber(number) {
+  if (isValidNumber(number, 'UA')) {
+    return format(parse(number, 'UA'), 'E.164')
+  } else {
+    return null
+  }
+}
+
 let uploadContacts = authenticatedHandler((user, req, res) => {
   // TODO check request schema
+  /*
+    {
+      contacts: [ {phoneNumber: '+380...', name: 'Bob Marley'} ]
+    }
+  */
   const contacts = req.body.contacts || []
 
   const savedContacts = contacts.map(async function(contact) {
     const registeredUser = await findUserByPhone(contact.phoneNumber)
+
+    const realName = registeredUser
+        && registeredUser[1].publicProfile
+        && registeredUser[1].publicProfile.userName
+
+    contact.phoneNumber = cleanPhoneNumber(contact.phoneNumber)
+    if (!contact.phoneNumber) {
+      return { badPhoneNumber: contact.phoneNumber }
+    }
+
     const contactData = {
       phoneNumber: contact.phoneNumber,
       contactsName: contact.name,
-      realName: registeredUser && registeredUser[1].name || contact.name,
+      realName: realName || contact.name,
       realNameSyncTimestamp: Date.now(),
       isRegistered: !!registeredUser,
       userId: registeredUser ? registeredUser[0] : null,
@@ -115,11 +139,12 @@ curl -X POST -H "Content-Type:application/json" \
 https://us-central1-sizzling-torch-7444.cloudfunctions.net/uploadContacts
 */
 
-function addUserToChat(chatId, userId, isAdmin, chatState) {
+function addUserToChat({chatId, userId, isAdmin, chatState}) {
   updateRef(`chatMembers/${chatId}/${userId}`, {
     isAdmin,
   })
   updateRef(`userChats/${userId}/${chatId}`, {
+    directChatKey: chatState.directChatKey,
     lastOpenedTimestamp: -1,
     readMessages: 0,
     totalMessages: chatState.totalMessages,
@@ -139,18 +164,23 @@ async function findDirectChatForKey(directChatKey) {
       .orderByChild('directChatKey')
       .equalTo(directChatKey)
   const chatData = await readOnce(chatRef)
-  return chatData ? Object.keys(chatData)[0] : null
+  if (!chatData) {
+    return null
+  }
+  const chatRecord = Object.entries(chatData)[0]
+  return Object.assign(chatRecord[1], {key: chatRecord[0]})
 }
 
 let createChat = authenticatedHandler(async function(user, req, res) {
   // TODO check input data schema
-  const chatProps = {
+  const newChatProps = {
     createdOn: Date.now(),
     createdBy: user.uid,
     totalMessages: 0,
     lastMessageTimestamp: 0,
   }
   let directChatKey = undefined
+  let newChat = null
   if (req.body.isDirectChat) {
     if (req.body.members.length !== 1) {
       throw new Error('Direct chat can only have 1 extra member but got ' + JSON.stringify(req.body.members))
@@ -159,10 +189,7 @@ let createChat = authenticatedHandler(async function(user, req, res) {
     const bob = req.body.members[0]
     directChatKey = alice < bob ? `${alice}-${bob}` : `${bob}-${alice}`
 
-    let existingChatId = await findDirectChatForKey(directChatKey)
-    if (existingChatId) {
-      return { chatId: existingChatId }
-    }
+    newChat = await findDirectChatForKey(directChatKey)
   } else {
     //  !req.body.isDirectChat === false
     throw new Error('Only direct chats are supported')
@@ -177,17 +204,20 @@ let createChat = authenticatedHandler(async function(user, req, res) {
   // INVARIANT: all input data has been validated beyond this point!
 
   if (req.body.isDirectChat === true) {
-      chatProps.isDirectChat = true
-      chatProps.directChatKey = directChatKey
+      newChatProps.isDirectChat = true
+      newChatProps.directChatKey = directChatKey
   }
   // TODO wrap all writes into a single database transaction
-  const newChat = await getRef('/chats/').push(chatProps)
+  if (!newChat) {
+    newChat = await getRef('/chats/').push(newChatProps)
+  }
 
-  const chatAdds = chatMembers.map(uid => addUserToChat(
-      newChat.key,
-      uid,
-      user.uid === uid,
-      chatProps))
+  const chatAdds = chatMembers.map(uid => addUserToChat({
+      chatId: newChat.key,
+      userId: uid,
+      isAdmin: user.uid === uid,
+      chatState: newChat.lastMessageTimestamp ? newChat : newChatProps,
+    }))
   const addResults = await Promise.all(chatAdds)
   return {
     chatId: newChat.key,
