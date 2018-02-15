@@ -27,17 +27,21 @@ import {
   Title,
 } from '../trvl'
 
+import firebase from '../firebase'
+
 export default class Conversations extends Component {
   constructor(props) {
     super(props)
     this.state = {
       chats: [],
+      knownUserNames: {},
+      user: null,
     }
   }
 
   componentWillMount() {
     // TODO: unsubscribe / resubscribe when props are being changed by a parent component
-    this.listener = this.props.conversationsRef
+    this.conversationslistener = this.props.conversationsRef
       .orderByChild('lastMessageTimestamp')
       .on('value', snap => {
         const chats = []
@@ -49,11 +53,46 @@ export default class Conversations extends Component {
         chats.reverse()
         this.setState({ chats })
       })
+
+    this.contactsListener = this.props.contactsRef
+      .on('value', snap => {
+        const knownUserNames = {}
+        snap.forEach(contact => {
+          contact = contact.val()
+          if (contact.userId) {
+            knownUserNames[contact.userId] = contact.contactsName
+          }
+        })
+        this.setState({ knownUserNames })
+      })
+
+      this.authSubscription = firebase.addAuthListener(() => this.setState({ user: firebase.authUser }))
   }
 
   componentWillUnmount() {
-    this.props.conversationsRef.off('value', this.listener)
-    delete this.listener
+    this.props.conversationsRef.off('value', this.conversationslistener)
+    delete this.conversationslistener
+
+    this.props.contactsRef.off('value', this.contactsListener)
+    delete this.contactsListener
+
+    firebase.removeAuthListener(this.authSubscription)
+  }
+
+  getDirectChatDisplayName(directChatKey) {
+    if (!this.state.user || !directChatKey) {
+      return null
+    }
+
+    const me = this.state.user.uid
+    let otherUserId = null
+    if (directChatKey.endsWith(`-${me}`)) {
+      otherUserId = directChatKey.substring(0, directChatKey.length - me.length - 1)
+    }
+    if (directChatKey.startsWith(`${me}-`)) {
+      otherUserId = directChatKey.substring(me.length + 1)
+    }
+    return this.state.knownUserNames[otherUserId]
   }
 
   render() {
@@ -72,7 +111,7 @@ export default class Conversations extends Component {
             const unreadCount = c.totalMessages - c.readMessages
             return <TouchableOpacity key={key} onPress={e => this.props.openChat(c.chatId)}>
               <Panel>
-                <Title>{c.chatId}</Title>
+                <Title>{this.getDirectChatDisplayName(c.directChatKey) || 'Невідомий'}</Title>
                 <Text>
                   {c.totalMessages
                     ? moment(c.lastMessageTimestamp).locale('uk').fromNow()
