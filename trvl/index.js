@@ -473,11 +473,11 @@ BottomNav.Button = class BottomNavButton extends Component {
         </Transition>
 
         <Transition duration={transitionDuration} objectId={'line-' + this.props.objectId} style={{
-            backgroundColor: this.props.active ? colorActive : 'transparent',
+            backgroundColor: this.props.active ? colorActive : undefined,
             height: 1.5,
-            shadowOffset: { width: -1, height: -1 },
-            shadowColor: this.props.active ? colorActive : 'transparent',
-            shadowOpacity: 0.375,
+            shadowOffset: this.props.active ? { width: -1, height: -1 } : undefined,
+            shadowColor: this.props.active ? colorActive : undefined,
+            shadowOpacity: this.props.active ? 0.375 : undefined,
             width: '100%',
           }}/>
       </TouchableOpacity>
