@@ -1,6 +1,9 @@
 import EventEmitter from 'EventEmitter'
 import { NativeModules, Platform, } from 'react-native'
 import Firebase from 'react-native-firebase'
+import { Observable } from 'rxjs/Observable'
+import 'rxjs/add/operator/do'
+import 'rxjs/add/operator/map'
 
 import Enum from './Enum'
 import * as Debug from './debugtools'
@@ -53,10 +56,6 @@ class FirebaseController {
 
   getCurrentUser() {
     return this.authUser
-  }
-
-  getDataModel() {
-    return new DataModel(this.firedb)
   }
 
   async startAuth() {
@@ -119,8 +118,28 @@ class FirebaseController {
     // TODO when rpc fails this throws a JSON parse error, should fail gracefully
     return await response.json()
   }
+
+  getObservableRef(path) {
+    return Observable.create(observer => {
+      const fireRef = this.firedb.ref(path)
+      const fireSubscription = fireRef.on('value', observer.next.bind(observer))
+
+      return function unsubscribe() {
+        fireRef.off('value', fireSubscription)
+      }
+    })
+  }
 }
 
 const firebaseController = new FirebaseController()
+
+export function snapshotToList(snap) {
+  const res = []
+  snap.forEach(child => {
+    res.push([child.key, child.val()])
+  })
+  return res
+}
+
 
 export default firebaseController

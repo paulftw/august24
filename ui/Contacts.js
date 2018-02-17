@@ -22,15 +22,26 @@ import {
   Title,
 } from '../trvl'
 
-import firebase from '../firebase'
+import firebase, { snapshotToList } from '../firebase'
 
 export default class Contacts extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
+      contacts: [],
       filter: 'inNetwork',
     }
+  }
+
+  componentWillMount() {
+    this.contactsSubscription = this.props.contacts
+        .map(snapshotToList)
+        .subscribe(contacts => this.setState({ contacts }))
+  }
+
+  componentWillUnmount() {
+    this.contactsSubscription.unsubscribe()
   }
 
   setFilter(filter) {
@@ -38,8 +49,11 @@ export default class Contacts extends Component {
   }
 
   render() {
-    const contacts = this.state.filter === 'all' ? this.props.contacts
-        : this.props.contacts.filter(c => c.userId)
+    let contacts = this.state.filter === 'all'
+        ? this.state.contacts
+        : this.state.contacts.filter(c => c[1].userId)
+    contacts.sort((a, b) => a[1].contactsName > b[1].contactsName)
+
     return (
       <Screen>
         <Hero backgroundImage={require('../assets/images/lavra1.jpg')}>
@@ -56,9 +70,11 @@ export default class Contacts extends Component {
             <SectionHeader.Text>{contacts.length} ПАРТИЗАН</SectionHeader.Text>
           </SectionHeader>
 
-          {contacts.map((c, key) => <TouchableOpacity key={key} onPress={e => this.props.openChat(c.phoneNumber)}>
+          {contacts.map(([key, c]) => <TouchableOpacity
+                key={key}
+                onPress={e => c.userId && this.props.openChat(c.directChatKey, c.userId)}>
               <Panel>
-                <Title>{c.name}</Title>
+                <Title>{c.contactsName}</Title>
                 <Text>{c.phoneNumber}</Text>
               </Panel>
             </TouchableOpacity>)

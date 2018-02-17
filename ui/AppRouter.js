@@ -20,12 +20,12 @@ export default function createRouter(rootComponent) {
       'Conversations': routeParams => <Conversations
           bottomNav={new BottomNav(router)}
           conversationsRef={firebase.firedb.ref('/userChats/' + firebase.authUser.uid)}
-          contactsRef={firebase.firedb.ref('/userContacts/' + firebase.authUser.uid)}
+          contacts={firebase.getObservableRef('/userContacts/' + firebase.authUser.uid)}
           openChat={chatId => router.navigate('Chat', {chatId, from: 'Conversations'})}
         />,
       'Contacts': routeParams => <Contacts
           bottomNav={new BottomNav(router)}
-          contacts={rootComponent.state.contacts || []}
+          contacts={firebase.getObservableRef('/userContacts/' + firebase.authUser.uid)}
           openChat={chatId => router.navigate('Chat', {chatId, from: 'Contacts'})}
         />,
       'Settings': routeParams => <Settings bottomNav={new BottomNav(router)}

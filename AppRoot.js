@@ -9,9 +9,6 @@ export default class AppRoot extends Component {
     this.state = {}
 
     this.router = appRouter(this)
-
-    this.dataModel = firebase.getDataModel()
-    this.state.contacts = this.dataModel.getContacts()
   }
 
   async onLogout() {

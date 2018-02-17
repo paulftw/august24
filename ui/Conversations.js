@@ -27,7 +27,7 @@ import {
   Title,
 } from '../trvl'
 
-import firebase from '../firebase'
+import firebase, { snapshotToList } from '../firebase'
 
 export default class Conversations extends Component {
   constructor(props) {
@@ -54,17 +54,13 @@ export default class Conversations extends Component {
         this.setState({ chats })
       })
 
-    this.contactsListener = this.props.contactsRef
-      .on('value', snap => {
-        const knownUserNames = {}
-        snap.forEach(contact => {
-          contact = contact.val()
-          if (contact.userId) {
-            knownUserNames[contact.userId] = contact.contactsName
-          }
-        })
-        this.setState({ knownUserNames })
-      })
+    this.contactsSubscription = this.props.contacts
+        .map(snapshotToList)
+        .map(contacts => contacts.reduce((names, [key, contact]) => contact.userId
+            ? Object.assign({}, names, {[contact.userId]: contact.contactsName})
+            : names,
+            {}))
+        .subscribe(knownUserNames => this.setState({ knownUserNames }))
 
       this.authSubscription = firebase.addAuthListener(() => this.setState({ user: firebase.authUser }))
   }
@@ -73,8 +69,7 @@ export default class Conversations extends Component {
     this.props.conversationsRef.off('value', this.conversationslistener)
     delete this.conversationslistener
 
-    this.props.contactsRef.off('value', this.contactsListener)
-    delete this.contactsListener
+    this.contactsSubscription.unsubscribe()
 
     firebase.removeAuthListener(this.authSubscription)
   }
