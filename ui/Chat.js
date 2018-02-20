@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import {
   ScrollView,
   Text,
-  TouchableWithoutFeedback,
   View,
 } from 'react-native'
 
@@ -45,14 +44,14 @@ export default class Chat extends Component {
   }
 
   onSend(messageId) {
-    // this.setState({
-    //   chatHistory: [...this.state.chatHistory, {
-    //     messageId: messageId,
-    //     my: (this.state.chatHistory.length % 5 < 2),
-    //   }]
-    // })
+    await firebase.rpc('sendMessageToChat', {
+      chatId: this.props.chatId,
+      message: {
+        messageCode: messageId,
+      },
+    })
 
-    setTimeout(() => this.refs.messagesView.scrollToEnd({animated: true}), 100)
+    setTimeout(() => this.refs.messagesView.scrollToEnd({animated: true}), 200)
   }
 
   render() {

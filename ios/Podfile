@@ -25,3 +25,11 @@ pod 'FirebaseUI/Auth', '~> 4.0'
 pod 'FirebaseUI/Phone', '~> 4.0'
 
 pod 'RNFirebase', :path => '../node_modules/react-native-firebase'
+
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    if target.name == "React"
+      target.remove_from_project
+    end
+  end
+end

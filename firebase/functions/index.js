@@ -226,3 +226,71 @@ let createChat = authenticatedHandler(async function(user, req, res) {
 })
 
 export { createChat }
+
+async function getChatMembers(chatId) {
+  return await readOnce('/chatMembers/' + chatId)
+}
+
+async function notifyMessage({
+    userId,
+    chatId,
+    senderId,
+    lastMessageTimestamp,
+    totalMessages,
+  }) {
+  updateRef(`/userChats/${userId}/${chatId}`, {
+    lastMessageTimestamp,
+    totalMessages,
+  })
+}
+
+let sendMessageToChat = authenticatedHandler(async function(user, req, res) {
+  // TODO check request schema
+  const chatId = req.body.chatId
+  const senderId = user.uid
+  const message = req.body.message
+
+  const chatRef = getRef(`/chats/${chatId}`)
+  const chatState = await readOnce(chatRef)
+  if (!chatState) {
+    throw new Error('Chat does not exist ' + chatId)
+  }
+
+  const members = Object.keys(await getChatMembers(chatId))
+
+  if (members.indexOf(senderId) < 0) {
+    throw new Error(`User ${senderId} has no write access to ${chatId}`)
+  }
+
+  if ([1, 2].indexOf(message.messageCode) < 0) {
+    throw new Error(`What are yo trying to send? "${message.messageCode}" really???`)
+  }
+
+  // TODO in a transaction:
+  const messageTimestamp = Date.now()
+  getRef('/chatMessages/' + chatId).push({
+    timestamp: messageTimestamp,
+    senderId,
+    message: { messageCode: message.messageCode },
+  })
+
+  const messageCount = (chatState.messageCount || 0) + 1
+  chatRef.update({
+    messageCount,
+    lastMessageTimestamp: messageTimestamp,
+  })
+
+  members.map(userId => notifyMessage({
+      userId,
+      chatId,
+      senderId,
+      messageTimestamp,
+      messageCount
+  }))
+  return {
+    messageCount,
+    lastMessageTimestamp: messageTimestamp,
+  }
+})
+
+export { sendMessageToChat }

@@ -29,7 +29,7 @@ export default class AppRoot extends Component {
       }
 
       // HACK: Ensures AppRoot is re-rendered on any auth change
-      self.setState({user})
+      this.setState({user})
 
       if (user) {
         const userNameExists = await firebase.userNameExists()

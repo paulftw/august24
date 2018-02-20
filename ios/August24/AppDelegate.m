@@ -8,8 +8,8 @@
  */
 
 #import "AppDelegate.h"
-//#import <CodePush/CodePush.h>
 #import "RNFirebaseMessaging.h"
+@import FirebaseAuthUI;
 
 #import <Firebase.h>
 #import <React/RCTBundleURLProvider.h>
@@ -26,7 +26,7 @@
   [[UNUserNotificationCenter currentNotificationCenter] setDelegate:self];
 
   NSURL *jsCodeLocation;
-//  [[RCTBundleURLProvider sharedSettings] setJsLocation: @"169.254.54.117"];
+//  [[RCTBundleURLProvider sharedSettings] setJsLocation: @"192.168.2.229"];
 //  [[RCTBundleURLProvider sharedSettings] setJsLocation: nil];
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
   RCTLogInfo(@"jsCodeLocation: %@", jsCodeLocation);
@@ -45,6 +45,7 @@
   return YES;
 }
 
+/// BEGIN -- RNFirebase Cloud Messaging
 -(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
   [RNFirebaseMessaging didReceiveLocalNotification:notification];
 }
@@ -56,6 +57,24 @@
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(nonnull NSDictionary *)userInfo
 fetchCompletionHandler:(nonnull void (^)(UIBackgroundFetchResult))completionHandler{
   [RNFirebaseMessaging didReceiveRemoteNotification:userInfo fetchCompletionHandler:completionHandler];
+}
+
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center
+       willPresentNotification:(UNNotification *)notification
+         withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler {
+  [RNFirebaseMessaging willPresentNotification:notification withCompletionHandler:completionHandler];
+}
+
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center
+didReceiveNotificationResponse:(UNNotificationResponse *)response
+         withCompletionHandler:(void (^)(void))completionHandler {
+  [RNFirebaseMessaging didReceiveNotificationResponse:response withCompletionHandler:completionHandler];
+}
+/// END   -- RNFirebase Cloud Messaging
+
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary *)options {
+  NSString *sourceApplication = options[UIApplicationOpenURLOptionsSourceApplicationKey];
+  return [[FUIAuth defaultAuthUI] handleOpenURL:url sourceApplication:sourceApplication];
 }
 
 @end

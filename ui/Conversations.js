@@ -64,6 +64,22 @@ export default class Conversations extends Component {
     this.authSubscription = firebase.addAuthListener(() => this.setState({ user: firebase.authUser }))
   }
 
+  unsubscribe() {
+    if (this.listener) {
+      this.conversationsRef.off('value', this.listener)
+      delete this.listener
+      delete this.conversationsRef
+    }
+  }
+
+  componentWillMount() {
+    this.subscribe(this.props.conversationsRef)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.subscribe(nextProps.conversationsRef)
+  }
+
   componentWillUnmount() {
     this.conversationsSubscription.unsubscribe()
     this.contactsSubscription.unsubscribe()
