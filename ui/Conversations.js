@@ -41,18 +41,17 @@ export default class Conversations extends Component {
 
   componentWillMount() {
     // TODO: unsubscribe / resubscribe when props are being changed by a parent component
-    this.conversationslistener = this.props.conversationsRef
-      .orderByChild('lastMessageTimestamp')
-      .on('value', snap => {
-        const chats = []
-        snap.forEach(chat => chats.push(Object.assign(
+    this.conversationsSubscription = this.props.conversations
+        .map(snapshotToList)
+        .map(conversations => conversations.map(([key, convo]) => Object.assign(
             {},
-            chat.val(),
-            {chatId: chat.key}
+            convo,
+            {chatId: key},
         )))
-        chats.reverse()
-        this.setState({ chats })
-      })
+        .subscribe(chats => {
+          chats.reverse()
+          this.setState({ chats })
+        })
 
     this.contactsSubscription = this.props.contacts
         .map(snapshotToList)
@@ -62,13 +61,11 @@ export default class Conversations extends Component {
             {}))
         .subscribe(knownUserNames => this.setState({ knownUserNames }))
 
-      this.authSubscription = firebase.addAuthListener(() => this.setState({ user: firebase.authUser }))
+    this.authSubscription = firebase.addAuthListener(() => this.setState({ user: firebase.authUser }))
   }
 
   componentWillUnmount() {
-    this.props.conversationsRef.off('value', this.conversationslistener)
-    delete this.conversationslistener
-
+    this.conversationsSubscription.unsubscribe()
     this.contactsSubscription.unsubscribe()
 
     firebase.removeAuthListener(this.authSubscription)
@@ -79,14 +76,7 @@ export default class Conversations extends Component {
       return null
     }
 
-    const me = this.state.user.uid
-    let otherUserId = null
-    if (directChatKey.endsWith(`-${me}`)) {
-      otherUserId = directChatKey.substring(0, directChatKey.length - me.length - 1)
-    }
-    if (directChatKey.startsWith(`${me}-`)) {
-      otherUserId = directChatKey.substring(me.length + 1)
-    }
+    const otherUserId = firebase.getOtherUserId(directChatKey)
     return this.state.knownUserNames[otherUserId]
   }
 

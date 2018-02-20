@@ -15,6 +15,8 @@ import {
   Screen,
 } from '../trvl'
 
+import { snapshotToList } from '../firebase'
+
 import Keyboard, { messageText } from './Keyboard'
 
 export default class Chat extends Component {
@@ -22,17 +24,33 @@ export default class Chat extends Component {
     super(props)
 
     this.state = {
-      chatHistory: [],
+      chatMessages: [],
     }
   }
 
+  componentWillMount() {
+    // TODO: unsubscribe / resubscribe when props are being changed by a parent component
+    this.messagesSubscription = this.props.messages
+        .map(snapshotToList)
+        .map(messages => messages.map(([key, msg]) => Object.assign(
+            {},
+            msg,
+            {messageId: key},
+        )))
+        .subscribe(messages => this.setState({ chatMessages: messages }))
+  }
+
+  componentWillUnmount() {
+    this.messagesSubscription.unsubscribe()
+  }
+
   onSend(messageId) {
-    this.setState({
-      chatHistory: [...this.state.chatHistory, {
-        messageId: messageId,
-        my: (this.state.chatHistory.length % 5 < 2),
-      }]
-    })
+    // this.setState({
+    //   chatHistory: [...this.state.chatHistory, {
+    //     messageId: messageId,
+    //     my: (this.state.chatHistory.length % 5 < 2),
+    //   }]
+    // })
 
     setTimeout(() => this.refs.messagesView.scrollToEnd({animated: true}), 100)
   }
@@ -52,7 +70,7 @@ export default class Chat extends Component {
         <ScrollView ref='messagesView' style={{
               flex: 1,
             }}>
-          {this.state.chatHistory.map((msg, key) => (
+          {this.state.chatMessages.map((msg, key) => (
             <View key={key} style={{
               alignSelf: msg.senderId === this.props.myId ? 'flex-end' : 'flex-start',
               padding: 8,

@@ -30,6 +30,7 @@ export default class Contacts extends Component {
 
     this.state = {
       contacts: [],
+      directChatForUser: {},
       filter: 'inNetwork',
     }
   }
@@ -38,14 +39,44 @@ export default class Contacts extends Component {
     this.contactsSubscription = this.props.contacts
         .map(snapshotToList)
         .subscribe(contacts => this.setState({ contacts }))
+
+    this.conversationsSubscription = this.props.conversations
+        .map(snapshotToList)
+        .map(conversations => conversations.reduce((dict, [key, chat]) => {
+            if (!chat.directChatKey) {
+              return dict
+            }
+            return Object.assign({}, dict, {[firebase.getOtherUserId(chat.directChatKey)]: key})
+          }, {}))
+        .subscribe(directChatForUser => this.setState({ directChatForUser }))
   }
 
   componentWillUnmount() {
     this.contactsSubscription.unsubscribe()
+    this.conversationsSubscription.unsubscribe()
   }
 
   setFilter(filter) {
     this.setState({filter})
+  }
+
+  async onPressContact(key, contact) {
+    // alert(JSON.stringify([key, contact]))
+    if (!contact.userId) {
+      // TODO: give visual feedback that the contact is not in the app
+      return
+    }
+    const chatId = this.state.directChatForUser[contact.userId]
+    if (chatId) {
+      this.props.openChat(chatId)
+    } else {
+      // TODO timeout & error handling
+      const newChat = await firebase.rpc('createChat', {
+        members: [contact.userId],
+        isDirectChat: true,
+      })
+      this.props.openChat(newChat.chatId)
+    }
   }
 
   render() {
@@ -70,12 +101,12 @@ export default class Contacts extends Component {
             <SectionHeader.Text>{contacts.length} ПАРТИЗАН</SectionHeader.Text>
           </SectionHeader>
 
-          {contacts.map(([key, c]) => <TouchableOpacity
+          {contacts.map(([key, contact]) => <TouchableOpacity
                 key={key}
-                onPress={e => c.userId && this.props.openChat(c.directChatKey, c.userId)}>
+                onPress={e => this.onPressContact(key, contact)}>
               <Panel>
-                <Title>{c.contactsName}</Title>
-                <Text>{c.phoneNumber}</Text>
+                <Title>{contact.contactsName}</Title>
+                <Text>{contact.phoneNumber}</Text>
               </Panel>
             </TouchableOpacity>)
           }

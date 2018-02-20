@@ -93,17 +93,24 @@ class FirebaseController {
   }
 
   async userNameExists() {
-    userId = this.firebase.auth().currentUser.uid
-    publicProfile = await this.firebase.database().ref(`/users/${userId}/publicProfile`).once('value')
-    return publicProfile.val() && publicProfile.val().userName ? true : false
+    const publicProfile = await this.firedb.ref(`/users/${this.authUser.uid}/publicProfile`).once('value')
+    const val = publicProfile.val()
+    return  !!(val && val.userName)
   }
 
   async saveUserName(userName) {
-    user = await this.firebase.auth().getCurrentUser()
-    if (user) {
-      this.authUserToken = await user.getIdToken()
-      this.firedb.ref(`/users/${user.uid}/publicProfile/userName`).set(userName)
+    this.firedb.ref(`/users/${this.authUser.uid}/publicProfile/userName`).set(userName)
+  }
+
+  getOtherUserId(directChatKey) {
+    const me = this.authUser.uid
+    if (directChatKey.endsWith(`-${me}`)) {
+      return directChatKey.substring(0, directChatKey.length - me.length - 1)
     }
+    if (directChatKey.startsWith(`${me}-`)) {
+      return directChatKey.substring(me.length + 1)
+    }
+    throw new Error('This is not a direct chat ' + directChatKey)
   }
 
   async rpc(route, params) {
@@ -119,9 +126,13 @@ class FirebaseController {
     return await response.json()
   }
 
-  getObservableRef(path) {
+  getObservableRef(path, options) {
+    options = options || {}
     return Observable.create(observer => {
-      const fireRef = this.firedb.ref(path)
+      let fireRef = this.firedb.ref(path)
+      if (options.orderByChild) {
+        fireRef = fireRef.orderByChild(options.orderByChild)
+      }
       const fireSubscription = fireRef.on('value', observer.next.bind(observer))
 
       return function unsubscribe() {
