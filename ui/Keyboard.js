@@ -12,7 +12,7 @@ import {
   TouchableOpacity,
 } from '../trvl'
 
-function messageText(messageId) {
+export function messageText(messageId) {
   return {
     '1': 'Слава Україні!',
     '2': 'Героям Слава!',

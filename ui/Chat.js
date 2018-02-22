@@ -14,7 +14,7 @@ import {
   Screen,
 } from '../trvl'
 
-import { snapshotToList } from '../firebase'
+import firebase, { snapshotToList } from '../firebase'
 
 import Keyboard, { messageText } from './Keyboard'
 
@@ -43,7 +43,7 @@ export default class Chat extends Component {
     this.messagesSubscription.unsubscribe()
   }
 
-  onSend(messageId) {
+  async onSend(messageId) {
     await firebase.rpc('sendMessageToChat', {
       chatId: this.props.chatId,
       message: {

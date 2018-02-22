@@ -39,9 +39,10 @@ export default class Conversations extends Component {
     }
   }
 
-  componentWillMount() {
-    // TODO: unsubscribe / resubscribe when props are being changed by a parent component
-    this.conversationsSubscription = this.props.conversations
+  subscribe(props) {
+    this.unsubscribe()
+
+    this.conversationsSubscription = props.conversations
         .map(snapshotToList)
         .map(conversations => conversations.map(([key, convo]) => Object.assign(
             {},
@@ -53,7 +54,7 @@ export default class Conversations extends Component {
           this.setState({ chats })
         })
 
-    this.contactsSubscription = this.props.contacts
+    this.contactsSubscription = props.contacts
         .map(snapshotToList)
         .map(contacts => contacts.reduce((names, [key, contact]) => contact.userId
             ? Object.assign({}, names, {[contact.userId]: contact.contactsName})
@@ -65,26 +66,32 @@ export default class Conversations extends Component {
   }
 
   unsubscribe() {
-    if (this.listener) {
-      this.conversationsRef.off('value', this.listener)
-      delete this.listener
-      delete this.conversationsRef
+    if (this.conversationsSubscription) {
+      this.conversationsSubscription.unsubscribe()
+      delete this.conversationsSubscription
+    }
+
+    if (this.contactsSubscription) {
+      this.contactsSubscription.unsubscribe()
+      delete this.contactsSubscription
+    }
+
+    if (this.authSubscription) {
+      firebase.removeAuthListener(this.authSubscription)
+      delete this.authSubscription
     }
   }
 
   componentWillMount() {
-    this.subscribe(this.props.conversationsRef)
+    this.subscribe(this.props)
   }
 
   componentWillReceiveProps(nextProps) {
-    this.subscribe(nextProps.conversationsRef)
+    this.subscribe(nextProps)
   }
 
   componentWillUnmount() {
-    this.conversationsSubscription.unsubscribe()
-    this.contactsSubscription.unsubscribe()
-
-    firebase.removeAuthListener(this.authSubscription)
+    this.unsubscribe()
   }
 
   getDirectChatDisplayName(directChatKey) {
