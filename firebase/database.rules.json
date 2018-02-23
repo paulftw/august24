@@ -50,9 +50,16 @@
       "$chatId": {
         ".indexOn": ["timestamp"],
         "$messageId": {
+          "timestamp": { ".validate": "newData.isNumber()" },
+          "senderId": { ".validate": true },
+          "$unknownProp": { ".validate": false },
+          "message": {
+            "messageCode": { ".validate": "newData.val() == 1 || newData.val() == 2" },
+            "$unknownProp": { ".validate": false }
+          },
+          ".write": "!data.exists() && newData.hasChildren(['timestamp', 'senderId', 'message']) && newData.child('senderId').val() == auth.uid && root.child('chatMembers').child($chatId).child(auth.uid).exists()"
         },
-        ".read": "root.child('chatMembers').child($chatId).child(auth.uid).exists()",
-        ".write": false
+        ".read": "root.child('chatMembers').child($chatId).child(auth.uid).exists()"
       }
     }
   }

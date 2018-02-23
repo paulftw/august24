@@ -44,8 +44,9 @@ export default class Chat extends Component {
   }
 
   async onSend(messageId) {
-    await firebase.rpc('sendMessageToChat', {
-      chatId: this.props.chatId,
+    this.props.messagesRef.push({
+      senderId: firebase.authUser.uid,
+      timestamp: Date.now(),
       message: {
         messageCode: messageId,
       },

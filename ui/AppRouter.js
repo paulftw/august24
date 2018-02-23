@@ -41,6 +41,7 @@ export default function createRouter(rootComponent) {
 
       'Chat': routeParams => <Chat
           chatId={routeParams.chatId}
+          messagesRef={firebase.getRef(`/chatMessages/${routeParams.chatId}`)}
           messages={firebase.getObservableRef(`/chatMessages/${routeParams.chatId}`, {
             orderByChild: 'timestamp',
           })}

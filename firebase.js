@@ -126,6 +126,10 @@ class FirebaseController {
     return await response.json()
   }
 
+  getRef(path) {
+    return this.firedb.ref(path)
+  }
+
   getObservableRef(path, options) {
     options = options || {}
     return Observable.create(observer => {

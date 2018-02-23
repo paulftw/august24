@@ -242,55 +242,34 @@ async function notifyMessage({
     lastMessageTimestamp,
     totalMessages,
   })
+  // TODO: send a push notification
 }
 
-let sendMessageToChat = authenticatedHandler(async function(user, req, res) {
-  // TODO check request schema
-  const chatId = req.body.chatId
-  const senderId = user.uid
-  const message = req.body.message
+let onMessageCreated = functions.database.ref('/chatMessages/{chatId}/{messageId}').onWrite(
+  async function({params, data}) {
+    const chatRef = getRef(`/chats/${params.chatId}`)
+    const chatState = await readOnce(chatRef)
+    if (!chatState) {
+      throw new Error('Chat does not exist ' + params.chatId)
+    }
 
-  const chatRef = getRef(`/chats/${chatId}`)
-  const chatState = await readOnce(chatRef)
-  if (!chatState) {
-    throw new Error('Chat does not exist ' + chatId)
-  }
+    const messageTimestamp = data.child('timestamp').val()
 
-  const members = Object.keys(await getChatMembers(chatId))
+    const members = Object.keys(await getChatMembers(params.chatId))
 
-  if (members.indexOf(senderId) < 0) {
-    throw new Error(`User ${senderId} has no write access to ${chatId}`)
-  }
+    const messageCount = (chatState.messageCount || 0) + 1
+    chatRef.update({
+      messageCount,
+      lastMessageTimestamp: messageTimestamp,
+    })
 
-  if ([1, 2].indexOf(message.messageCode) < 0) {
-    throw new Error(`What are yo trying to send? "${message.messageCode}" really???`)
-  }
-
-  // TODO in a transaction:
-  const messageTimestamp = Date.now()
-  getRef('/chatMessages/' + chatId).push({
-    timestamp: messageTimestamp,
-    senderId,
-    message: { messageCode: message.messageCode },
+    return Promise.all(members.map(userId => notifyMessage({
+        userId,
+        chatId: params.chatId,
+        senderId: data.child('senderId').val(),
+        lastMessageTimestamp: Math.max(chatState.lastMessageTimestamp, messageTimestamp),
+        totalMessages: messageCount,
+    })))
   })
 
-  const messageCount = (chatState.messageCount || 0) + 1
-  chatRef.update({
-    messageCount,
-    lastMessageTimestamp: messageTimestamp,
-  })
-
-  members.map(userId => notifyMessage({
-      userId,
-      chatId,
-      senderId,
-      messageTimestamp,
-      messageCount
-  }))
-  return {
-    messageCount,
-    lastMessageTimestamp: messageTimestamp,
-  }
-})
-
-export { sendMessageToChat }
+export { onMessageCreated }
