@@ -4,6 +4,7 @@ import {
   Text,
   View,
 } from 'react-native'
+import {Observable} from 'rxjs'
 
 import Transition from '../react-native-style-transition'
 
@@ -37,10 +38,25 @@ export default class Chat extends Component {
             {messageId: key},
         )))
         .subscribe(messages => this.setState({ chatMessages: messages }))
+
+    this.markAsReadIntervalSubscription = Observable.interval(5000)
+        .subscribe(() => this.markAllRead())
   }
 
   componentWillUnmount() {
     this.messagesSubscription.unsubscribe()
+    this.markAsReadIntervalSubscription.unsubscribe()
+  }
+
+  async markAllRead() {
+    const ref = this.props.userChatState
+    const oldVal = (await ref.once('value')).val()
+    let patch = {}
+    if (oldVal.lastOpenedTimestamp < Date.now() - 30) {
+      patch.lastOpenedTimestamp = Date.now()
+    }
+    patch.readMessages = oldVal.totalMessages
+    ref.update(patch, x => log('onComplete', x))
   }
 
   async onSend(messageId) {

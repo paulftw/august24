@@ -46,6 +46,7 @@ export default function createRouter(rootComponent) {
           messages={firebase.getObservableRef(`/chatMessages/${routeParams.chatId}`, {
             orderByChild: 'timestamp',
           })}
+          userChatState={firebase.getRef(`/userChats/${firebase.authUser.uid}/${routeParams.chatId}`)}
           onBack={e => router.navigate(routeParams.from)}
         />,
 

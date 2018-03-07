@@ -28,8 +28,18 @@
       "$uid": {
         ".indexOn": ["lastMessageTimestamp"],
         "$chatId": {
+          "lastOpenedTimestamp": {
+            ".validate": "newData.isNumber() && newData.val() > now - 30000 && newData.val() <= now",
+            ".write": "$uid === auth.uid"
+          },
+          "readMessages": {
+            ".validate": "newData.isNumber() && data.parent().child('totalMessages').val() - newData.val() >= 0",
+            ".write": "$uid === auth.uid"
+          },
+          "$allOtherFields": {
+            ".write": false
+          }
         },
-        ".write": false,
         ".read": "$uid === auth.uid"
       }
     },
