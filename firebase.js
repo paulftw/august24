@@ -1,7 +1,6 @@
-import EventEmitter from 'EventEmitter'
 import { NativeModules, Platform, } from 'react-native'
 import Firebase from 'react-native-firebase'
-import { Observable } from 'rxjs/Observable'
+import { BehaviorSubject, Observable } from 'rxjs/Rx'
 import 'rxjs/add/operator/do'
 import 'rxjs/add/operator/map'
 
@@ -20,7 +19,11 @@ class FirebaseController {
   constructor() {
     this.firebase = Firebase.app()
     this.firedb = this.firebase.database()
-    this.emitter = new EventEmitter()
+
+    this.authStateSubject = new BehaviorSubject({
+      user: null,
+      previousState: AuthState.Unknown,
+    })
 
     this.networkStatus = NetworkState.Online
     this.authStatus = AuthState.Unknown
@@ -30,17 +33,12 @@ class FirebaseController {
     this.firebase.auth().onAuthStateChanged(user => this.onAuthStateChanged(user))
   }
 
-  addAuthListener(fn) {
-    const subscription = this.emitter.addListener(AUTH_EVENT_NAME, fn)
-    if (this.authStatus !== AuthState.Unknown) {
-      fn({user: this.authUser, previousState: AuthState.Unknown, })
-    }
-
-    return subscription
+  addAuthListener(next) {
+    return this.authStateSubject.subscribe({next})
   }
 
   removeAuthListener(subscription) {
-    return this.emitter.removeSubscription(subscription)
+    return subscription.unsubscribe()
   }
 
   async onAuthStateChanged(user) {
@@ -51,7 +49,7 @@ class FirebaseController {
       this.authUserToken = await user.getIdToken()
       this.firedb.ref(`/users/${user.uid}/publicProfile/lastLogin`).set(Date.now())
     }
-    this.emitter.emit(AUTH_EVENT_NAME, { user, previousState, })
+    this.authStateSubject.next({ user, previousState, })
   }
 
   getCurrentUser() {

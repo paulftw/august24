@@ -19,13 +19,14 @@ export default class AppRoot extends Component {
 
   async onLoginStatusChanged({ user, previousState, }) {
     // Firebase may or may not start before the root component is mounted.
+
+    // HACK: Ensures AppRoot is re-rendered on any auth change
+    this.setState({user})
+
     if (previousState !== firebase.AuthStates.Unknown) {
       // Ignore all transitions after the initial load.
       return
     }
-
-    // HACK: Ensures AppRoot is re-rendered on any auth change
-    this.setState({user})
 
     if (user) {
       const userNameExists = await firebase.userNameExists()
