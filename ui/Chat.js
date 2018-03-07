@@ -64,7 +64,7 @@ export default class Chat extends Component {
           </TouchableOpacity>
         )}>
 
-          <TopBar.Title text={this.props.chatId} />
+          <TopBar.Title text={this.props.chatName} />
         </TopBar>
 
         <ScrollView ref='messagesView' style={{

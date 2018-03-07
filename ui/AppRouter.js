@@ -23,7 +23,7 @@ export default function createRouter(rootComponent) {
           conversations={firebase.getObservableRef('/userChats/' + firebase.authUser.uid, {
             orderByChild: 'lastMessageTimestamp',
           })}
-          openChat={chatId => router.navigate('Chat', {chatId, from: 'Conversations'})}
+          openChat={(chatId, chatName) => router.navigate('Chat', {chatId, chatName, from: 'Conversations'})}
         />,
       'Contacts': routeParams => <Contacts
           bottomNav={new BottomNav(router)}
@@ -31,7 +31,7 @@ export default function createRouter(rootComponent) {
           conversations={firebase.getObservableRef('/userChats/' + firebase.authUser.uid, {
             orderByChild: 'lastMessageTimestamp',
           })}
-          openChat={chatId => router.navigate('Chat', {chatId, from: 'Contacts'})}
+          openChat={(chatId, chatName) => router.navigate('Chat', {chatId, chatName, from: 'Contacts'})}
         />,
       'Settings': routeParams => <Settings bottomNav={new BottomNav(router)}
           onLogout={e => rootComponent.onLogout()}
@@ -41,6 +41,7 @@ export default function createRouter(rootComponent) {
 
       'Chat': routeParams => <Chat
           chatId={routeParams.chatId}
+          chatName={routeParams.chatName}
           messagesRef={firebase.getRef(`/chatMessages/${routeParams.chatId}`)}
           messages={firebase.getObservableRef(`/chatMessages/${routeParams.chatId}`, {
             orderByChild: 'timestamp',

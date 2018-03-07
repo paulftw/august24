@@ -11,8 +11,6 @@ import DataModel from './DataModel'
 const NetworkState = Enum('Offline', 'Online')
 const AuthState = Enum('Unknown', 'SignedIn', 'NotSignedIn')
 
-const AUTH_EVENT_NAME = 'auth_state_changed'
-
 const URL_API_SERVER = 'https://us-central1-sizzling-torch-7444.cloudfunctions.net/'
 
 class FirebaseController {

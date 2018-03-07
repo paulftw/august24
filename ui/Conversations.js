@@ -117,7 +117,8 @@ export default class Conversations extends Component {
 
           {this.state.chats.map((c, key) => {
             const unreadCount = c.totalMessages - c.readMessages
-            return <TouchableOpacity key={key} onPress={e => this.props.openChat(c.chatId)}>
+            return <TouchableOpacity key={key}
+                onPress={e => this.props.openChat(c.chatId, this.getDirectChatDisplayName(c.directChatKey))}>
               <Panel>
                 <Title>{this.getDirectChatDisplayName(c.directChatKey) || 'Невідомий'}</Title>
                 <Text>
