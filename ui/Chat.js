@@ -56,7 +56,7 @@ export default class Chat extends Component {
       patch.lastOpenedTimestamp = Date.now()
     }
     patch.readMessages = oldVal.totalMessages
-    ref.update(patch, x => log('onComplete', x))
+    ref.update(patch)
   }
 
   async onSend(messageId) {
