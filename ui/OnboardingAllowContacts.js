@@ -90,7 +90,7 @@ export default class OnboardingAllowContacts extends Component {
         contacts: allContactRecords.slice(i, i + BATCH),
       }))
     }
-    Promise.all(rpcs).then(res => alert(`Залито ${allContactRecords.length} номерів в ${res.length} порцій`))
+    Promise.all(rpcs).then(res => false && alert(`Залито ${allContactRecords.length} номерів в ${res.length} порцій`))
 
     firebase.rpc('uploadContacts', {
       contacts: [{

@@ -18,6 +18,11 @@ export default class OnboardingAskName extends Component {
     this.state = {}
   }
 
+  async componentWillMount() {
+    const userName = await firebase.getUserName()
+    this.setState({userName})
+  }
+
   async onSaveName() {
     await firebase.saveUserName(this.state.userName)
     this.props.onSuccess()
@@ -25,18 +30,16 @@ export default class OnboardingAskName extends Component {
 
   render() {
     return (
-      <Screen>
+      <Screen avoidKeyboard={true}>
         <View style={{flex: 40}}></View>
-        <Hero xbackgroundImage={require('../assets/images/lavra1.jpg')}>
+        <Hero>
           <Hero.Subtitle>Як Вас звати?</Hero.Subtitle>
         </Hero>
         <View style={{flex: 30}}>
           <TextInput
-            underlineColorAndroid={'white'}
-            style={{color: 'white'}}
             onChangeText={(userName) => this.setState({userName})}
             placeholder={'Назвіться'}
-            placeholderTextColor={'white'}
+            onSubmitEditing={e => this.onSaveName()}
             value={this.state.userName} />
         </View>
         <View style={{flex: 20}}>

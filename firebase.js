@@ -98,6 +98,11 @@ class FirebaseController {
     this.firedb.ref(`/users/${this.authUser.uid}/publicProfile/userName`).set(userName)
   }
 
+  async getUserName() {
+    const res = await this.firedb.ref(`/users/${this.authUser.uid}/publicProfile/userName`).once()
+    return res.val()
+  }
+
   getOtherUserId(directChatKey) {
     const me = this.authUser.uid
     if (directChatKey.endsWith(`-${me}`)) {

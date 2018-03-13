@@ -35,6 +35,7 @@ export default function createRouter(rootComponent) {
         />,
       'Settings': routeParams => <Settings bottomNav={new BottomNav(router)}
           onLogout={e => rootComponent.onLogout()}
+          onChangeName={e => router.navigate('SettingsChangeName')}
           // TODO: onOpenAllowContacts is used for debug only
           onOpenAllowContacts={e => router.navigate('OnboardingAllowContacts')}
         />,
@@ -60,6 +61,10 @@ export default function createRouter(rootComponent) {
         />,
       'OnboardingAllowContacts': routeParams => <OnboardingAllowContacts
           onSuccess={() => router.navigate('Contacts')}
+        />,
+
+      'SettingsChangeName': routeParams => <OnboardingAskName
+          onSuccess={() => router.navigate('Settings')}
         />,
     },
     initialRoute: 'LoadingScreen',

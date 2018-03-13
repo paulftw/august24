@@ -51,6 +51,10 @@ export default class Settings extends Component {
         </Hero>
 
         <ScrollView>
+          <TouchableOpacity onPress={e => this.props.onChangeName()}>
+            <Button label="Змінити Ім'я" />
+          </TouchableOpacity>
+
           <TouchableOpacity
               onPress={e => this.onLogout()}
               >

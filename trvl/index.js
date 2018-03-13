@@ -5,9 +5,9 @@ import RNative, {
   Animated,
   Dimensions,
   ImageBackground,
+  KeyboardAvoidingView,
   StatusBar,
   StyleSheet,
-  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native'
@@ -79,7 +79,7 @@ function mergeStyle(...styles) {
   return res
 }
 
-export { Icon, TextInput, TouchableOpacity, View, }
+export { Icon, TouchableOpacity, View, }
 
 export class Hero extends Component {
   getPropsWithDefaults(parentProps) {
@@ -180,16 +180,18 @@ export class Screen extends Component {
   }
 
   render() {
-    return <View style={{
-      backgroundColor: backgroundColor,
-      flex: 1,
-      paddingLeft: gridMargin + screenGutter,
-      paddingRight: gridMargin + screenGutter,
-    }}>
+    const ViewComponent = this.props.avoidKeyboard ? KeyboardAvoidingView : View
+    return <ViewComponent
+        behavior={this.props.avoidKeyboard ? 'height' : undefined}
+        style={{
+          backgroundColor: backgroundColor,
+          flex: 1,
+          paddingLeft: gridMargin + screenGutter,
+          paddingRight: gridMargin + screenGutter,
+        }}>
       <StatusBar hidden={true} barStyle='light-content' />
       {this.props.children}
-
-    </View>
+    </ViewComponent>
   }
 }
 Screen.childContextTypes = {
@@ -529,6 +531,28 @@ BottomNav.badge = function({ active, label, objectId, }) {
         }}>{label}</Text>
       }
     </Transition>
+}
+
+export class TextInput extends Component {
+  render() {
+    return <RNative.TextInput
+        autoFocus={true}
+        onChangeText={this.props.onChangeText}
+        onSubmitEditing={this.props.onSubmitEditing}
+        placeholder={this.props.placeholder}
+        placeholderTextColor={textColorMuted}
+        returnKeyType='done'
+        style={{
+          backgroundColor: grayBG,
+          borderRadius: 4,
+          color: textColorLoud,
+          fontSize: fontSize.H1,
+          padding: 15,
+        }}
+        underlineColorAndroid={textColorMuted}
+        value={this.props.value} />
+
+  }
 }
 
 export class Button extends Component {
