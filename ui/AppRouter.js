@@ -48,6 +48,7 @@ export default function createRouter(rootComponent) {
             orderByChild: 'timestamp',
           })}
           userChatState={firebase.getRef(`/userChats/${firebase.authUser.uid}/${routeParams.chatId}`)}
+          userId={firebase.authUser.uid}
           onBack={e => router.navigate(routeParams.from)}
         />,
 
