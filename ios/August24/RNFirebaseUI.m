@@ -21,7 +21,10 @@ static RCTPromiseRejectBlock loginReject = nil;
 
 static NSArray<id<FUIAuthProvider>> *authProviders = nil;
 
-RCT_EXPORT_METHOD(showLogin:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+RCT_EXPORT_METHOD(
+    showLogin:(BOOL)allowEmailLogin
+    withResolver:(RCTPromiseResolveBlock)resolve
+    rejecter:(RCTPromiseRejectBlock)reject)
 {
   loginReject = reject;
   loginResolve = resolve;
@@ -29,7 +32,6 @@ RCT_EXPORT_METHOD(showLogin:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromise
   if (authUI == nil) {
     authUI = [FUIAuth defaultAuthUI];
     authUI.delegate = self;
-    authUI.signInWithEmailHidden = true;
 
     if (authProviders == nil) {
       authProviders = @[
@@ -40,10 +42,10 @@ RCT_EXPORT_METHOD(showLogin:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromise
 
     authUI.providers = authProviders;
   }
-
+  authUI.signInWithEmailHidden = !allowEmailLogin;
+  
   dispatch_async(dispatch_get_main_queue(), ^{
     authViewController = [authUI authViewController];
-    authViewController.delegate = authUI;
     UIViewController* rootCtrl = [UIApplication sharedApplication].delegate.window.rootViewController;
     [rootCtrl presentViewController:authViewController animated:YES completion:nil];
   });
@@ -144,6 +146,10 @@ NSDictionary *fuiErrorStrings = nil;
             @"message": message,
             @"error": error
         }]);
+  
+    authViewController = nil;
+    loginResolve = nil;
+    loginReject =  nil;
 }
 
 @end

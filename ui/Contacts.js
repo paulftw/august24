@@ -6,6 +6,8 @@ import {
   View,
 } from 'react-native'
 
+import Communications from 'react-native-communications'
+
 import {
   centerVertical,
   floatRight,
@@ -61,9 +63,9 @@ export default class Contacts extends Component {
   }
 
   async onPressContact(key, contact) {
-    // alert(JSON.stringify([key, contact]))
     if (!contact.userId) {
       // TODO: give visual feedback that the contact is not in the app
+      Communications.text(contact.phoneNumber, "Привіт! Запрошую встановити класний додаток - зайди в AppStore і пошукай \"Слава Україні\"")
       return
     }
     const chatId = this.state.directChatForUser[contact.userId]

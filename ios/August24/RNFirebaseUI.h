@@ -14,7 +14,7 @@
 
 #import <React/RCTViewManager.h>
 
-@interface RNFirebaseUI : RCTViewManager
+@interface RNFirebaseUI : RCTViewManager <FUIAuthDelegate>
 @end
 
 #endif /* RNFirebaseUI_h */

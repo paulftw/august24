@@ -59,7 +59,7 @@ class FirebaseController {
     try {
       let uiResult = null
       if (Platform.OS === 'ios') {
-        uiResult = await NativeModules.RNFirebaseUI.showLogin()
+        uiResult = await NativeModules.RNFirebaseUI.showLogin(true)
       } else if (Platform.OS === 'android') {
         NativeModules.RNFirebaseUIAuthPhoneExample.show()
       } else {

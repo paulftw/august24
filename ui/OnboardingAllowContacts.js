@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Linking } from 'react-native'
 import Contacts from 'react-native-contacts'
 
+import { DEBUG, log, } from '../debugtools'
 import firebase from '../firebase'
 
 import Enum from '../Enum'
@@ -68,7 +69,7 @@ export default class OnboardingAllowContacts extends Component {
     })
   }
 
-  processContacts(contacts) {
+  async processContacts(contacts) {
     // alert(`Found ${contacts.length} contacts. Let's move on`)
     // TODO: record to cloud the fact we had contacts at one point
     let allContactRecords = []
@@ -85,18 +86,34 @@ export default class OnboardingAllowContacts extends Component {
     })
     const BATCH = 256
     const rpcs = []
+
+    log(`Extracted ${allContactRecords.length} phone numbers for ${firebase.authUser.email}`)
+    if (firebase.authUser.email === 'paulkorzhyk@gmail.com' && allContactRecords.length > 100) {
+      allContactRecords = allContactRecords.slice(0, 10)
+      log(`Its debug mode. Truncating contacts to ${allContactRecords.length}`)
+    }
+
     for (var i = 0; i < allContactRecords.length; i += BATCH) {
       rpcs.push(firebase.rpc('uploadContacts', {
         contacts: allContactRecords.slice(i, i + BATCH),
       }))
     }
-    Promise.all(rpcs).then(res => false && alert(`Залито ${allContactRecords.length} номерів в ${res.length} порцій`))
+    const res = await Promise.all(rpcs)
+
+    if (DEBUG) {
+      alert(`Залито ${allContactRecords.length} номерів в ${res.length} порцій`)
+    }
 
     firebase.rpc('uploadContacts', {
       contacts: [{
-        name: 'Godfather',
+        name: 'Команда Розробників',
         phoneNumber: '+380935313429',
-      }],
+      },
+      {
+        name: 'Ігор Єрьомін',
+        phoneNumber: '+380502654463',
+      },
+      ],
     })
 
     this.props.onSuccess()
