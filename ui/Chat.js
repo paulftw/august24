@@ -88,15 +88,15 @@ export default class Chat extends Component {
             }}>
           {this.state.chatMessages.map((msg, key) => (
             <View key={key} style={{
-              alignSelf: msg.senderId === this.props.myId ? 'flex-end' : 'flex-start',
+              alignSelf: msg.senderId === this.props.userId ? 'flex-end' : 'flex-start',
               padding: 8,
-              borderColor: msg.senderId === this.props.myId ? '#fff6' : '#12DFCA',
+              borderColor: msg.senderId === this.props.userId ? '#fff6' : '#12DFCA',
               borderWidth: 1,
               borderRadius: 8,
               margin: 4,
             }}>
               <Text style={{
-                color: msg.senderId === this.props.myId ? '#fffb' : '#12DFCA',
+                color: msg.senderId === this.props.userId ? '#fffb' : '#12DFCA',
               }}>{messageText(msg.message.messageCode)}</Text>
             </View>
           ))}
