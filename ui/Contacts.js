@@ -70,22 +70,26 @@ export default class Contacts extends Component {
     }
     const chatId = this.state.directChatForUser[contact.userId]
     if (chatId) {
-      this.props.openChat(chatId)
+      this.props.openChat(chatId, this.displayName(contact))
     } else {
       // TODO timeout & error handling
       const newChat = await firebase.rpc('createChat', {
         members: [contact.userId],
         isDirectChat: true,
       })
-      this.props.openChat(newChat.chatId)
+      this.props.openChat(newChat.chatId, this.displayName(contact))
     }
+  }
+
+  displayName(contact) {
+    return contact.contactsName || contact.realName
   }
 
   render() {
     let contacts = this.state.filter === 'all'
         ? this.state.contacts
         : this.state.contacts.filter(c => c[1].userId)
-    contacts.sort((a, b) => a[1].contactsName > b[1].contactsName)
+    contacts.sort((a, b) => this.displayName(a[1]) > this.displayName(b[1]))
 
     return (
       <Screen>
@@ -107,7 +111,7 @@ export default class Contacts extends Component {
                 key={key}
                 onPress={e => this.onPressContact(key, contact)}>
               <Panel>
-                <Title>{contact.contactsName}</Title>
+                <Title>{this.displayName(contact)}</Title>
                 <Text>{contact.phoneNumber}</Text>
               </Panel>
             </TouchableOpacity>)
